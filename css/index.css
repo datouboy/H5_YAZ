@@ -1,0 +1,142 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+*:focus { outline: none; }
+
+body {width: 100%; height: 100%; background:#eeee9c; overflow: hidden; font-family: -apple-system-font,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei UI","Microsoft YaHei",Arial,sans-serif; font-size: 0.28rem;}
+img {display: block; position: absolute;}
+
+/*-------------------------弹窗----------------------------*/
+.popBg {width: 100%; height: 100%; background: url('../images/pop_bg.png') repeat; position: absolute; z-index: 100; left:0; top: 0; display: none;}
+.popMain {width: 3.4rem; height: 4.97rem; background: url('../images/pop_bg_error.png') no-repeat; background-size: 100%; position: absolute; top: 2.44rem; left: 2.05rem; z-index: 102; display: none;}
+.popMain button {width: 2.5rem; height: 0.67rem; border: none; background:url('../images/submit_bg.png') no-repeat; background-size: 100%; position: absolute; left: 0.44rem; bottom: -1.6rem; font-size: 14px; color: #fff;}
+
+#errorAnswer #errorAnswerText{font-size: 1.7rem; line-height: 1.7rem; padding-top: 1.4rem; text-align: center;}
+#noPrize {background: url('../images/pop_bg_noprize.png') no-repeat; background-size: 100%;}
+#prize {background: url('../images/pop_bg_lucky_1.png') no-repeat; background-size: 100%;}
+#prize button {display: none;}
+#prize div {text-align: center; padding-top: 3rem; display: none;}
+#prize div * {vertical-align: middle;}
+#prize div img {display: inline-block; width: 1.12rem; position: relative;}
+#prize div span {display: inline-block; font-size: 0.3rem;}
+
+/*-------------------------音乐----------------------------*/
+.musicMenu,.musicMenu .control {
+    width: 1rem;
+    height: 1rem;
+    position: absolute
+}
+.musicMenu {
+    right: 0;
+    top: 0;
+    z-index: 99999
+}
+.musicMenu .control .control-after {
+    position: absolute;
+    width: .6rem;
+    height: .6rem;
+    left: 0;
+    bottom: 0;
+    background: url(../images/music_off.png) center center no-repeat;
+    background-size: 100% 100%
+}
+.musicMenu .control.show_loop {
+    background: url(../images/music_fly.gif) center center no-repeat;
+    background-size: 100% 100%
+}
+@keyframes musicMenu_animation {
+    0% {
+        transform: rotate(0)
+    }
+
+    100% {
+        transform: rotate(360deg)
+    }
+}
+.musicMenu .control.show_loop .control-after {
+    background: url(../images/music.png) center center no-repeat;
+    background-size: 100% 100%;
+    animation: musicMenu_animation 5s linear infinite
+}
+
+/*-------------------------主界面----------------------------*/
+.mainBox {width: 6.57rem; height: 10.32rem; background:url('../images/main_bg.png') no-repeat; background-size: 100%; margin:0.5rem auto 0 auto; position: relative; overflow: hidden;}
+.mainBox .mainBoxTitle {width: 4.36rem; height: 0.76rem; background:url('../images/main_bg_title.png') no-repeat; background-size: 100%; position: absolute; left: 1.1rem; top:0.33rem;}
+
+.mainBox .startPage {width: 6.38rem; height: 8.7rem; background:url('../images/mainbox_bg.png') no-repeat; background-size: 100%; position: absolute; left: 0.09rem; top: 1.2rem;}
+.mainBox .startPage img {position: absolute;}
+.mainBox .startPage .startDate {position: absolute; width: 100%; text-align: center; line-height: 150%; top: 2.8rem;}
+
+.mainBox .startPage2 {width: 6.38rem; height: 8.7rem; background:url('../images/mainbox_bg2.png') no-repeat; background-size: 100%; position: absolute; left: 0.09rem; top: 1.2rem; display: none;}
+.mainBox .startPage3 {width: 6.38rem; height: 8.7rem; background:url('../images/mainbox_bg3.png') no-repeat; background-size: 100%; position: absolute; left: 0.09rem; top: 1.2rem; opacity: 0; display: none;}
+
+.mainBox .startPage_TG {width: 6.38rem; height: 8.7rem; background:url('../images/mainbox_bg_tg.png') no-repeat; background-size: 100%; position: absolute; left: 0.09rem; top: 1.2rem; display: none;}
+
+.mainBox .timeOut {text-align: center; line-height: 1.13rem; font-size: 0.3rem; position: absolute; width: 100%; bottom: 0.16rem;}
+
+/*/--------------答题--------------/*/
+.mainBox .questionPage {width: 6.38rem; height: 8.7rem; background:url('../images/mainbox_bg_dt.png') no-repeat; background-size: 100%; position: absolute; left: 0.09rem; top: 1.2rem; text-align: center; display: none;}
+.mainBox .questionPage h3 {font-size: 0.36rem; height: 1.24rem; line-height: 1.24rem; margin-top: 0.26rem; text-align: center;}
+.mainBox .questionPage ul {padding-top: 0.5rem;}
+.mainBox .questionPage ul li {height: 0.6rem; line-height: 0.6rem; width: 5.26rem; margin: 0 auto 0.5rem auto; border-radius: 0.4rem; background: #00a4b0; border: 2px solid #000; text-align: center; position: relative; transition: all .3s;}
+.mainBox .questionPage ul li::before,
+.mainBox .questionPage ul li::after {display: block; content: ''; width: 0.18rem; height: 0.18rem; background: #dae43b; border: 1px solid #000; position: absolute; top: 0.19rem; border-radius: 50%;}
+.mainBox .questionPage ul li::before {left: 0.2rem;}
+.mainBox .questionPage ul li::after {right: 0.2rem;}
+.mainBox .questionPage ul li.onthis {background: #ff7835; transition: all .3s;}
+.mainBox .questionPage button {width: 1.99rem; height: 0.47rem; background: url('../images/submit.png') no-repeat; background-size: 100%; border: none; margin-top: -0.2rem;}
+
+/*-----------------等待------------------*/
+.mainBox .waiting {width: 6.38rem; height: 8.7rem; background:url('../images/mainbox_bg4.png') no-repeat; background-size: 100%; position: absolute; left: 0.09rem; top: 1.2rem; text-align: center; display: none;}
+.mainBox .waiting .timeOut {font-size: 1.3rem; bottom: 3.49rem;}
+
+/*-----------------排行榜------------------*/
+.mainBox .rankingList {width: 6.38rem; height: 8.7rem; background:url('../images/mainbox_bg5.jpg') no-repeat; background-size: 100%; position: absolute; left: 0.09rem; top: 1.2rem; text-align: center; display: none;}
+.mainBox .rankingList .scrollerBox {position:relative; width: 5rem; height: 6rem; margin: 1.5rem auto 0 auto; overflow: hidden;}
+.mainBox .rankingList ul {}
+.mainBox .rankingList ul li {height: 0.74rem; line-height: 0.74rem; padding: 0.22rem 0.05rem; text-align: left; border-bottom:1px dashed #4f2510;}
+.mainBox .rankingList ul li * {display: inline-block; vertical-align: middle; position: relative;}
+.mainBox .rankingList ul li img {height:0.75rem; width: 0.75rem; border-radius: 0.08rem;}
+.mainBox .rankingList ul li span {font-size: 0.3rem;}
+.mainBox .rankingList ul li span.order {padding-right: 0.4rem;}
+.mainBox .rankingList ul li span.userName {padding-left: 0.2rem;}

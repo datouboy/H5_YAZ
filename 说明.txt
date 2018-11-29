@@ -1,0 +1,4 @@
+test_answer.html返回参数：
+okAnswer：答题是否正确 true、false
+prize：奖品，12 、0，（当数字为0时，说明红包已发完）
+rightAnswer：C（正确答案）

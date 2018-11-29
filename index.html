@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset='utf-8' />
+	<title>“优”秀如你，答出惊喜</title>
+	<meta name='viewport' content='width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no'
+	/>
+	<meta name="renderer" content="webkit"/>
+	<meta name='apple-mobile-web-app-capable' content='yes' />
+	<meta name='full-screen' content='true' />
+	<meta name='x5-fullscreen' content='true' />
+	<meta name='360-fullscreen' content='true' />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<meta http-equiv='expires' content='0' />
+	<meta http-equiv="Cache-Control" content="no-siteapp"/>
+	<script type="text/javascript">
+		document.documentElement.style.fontSize = document.documentElement.clientWidth / 750*100 + 'px';
+	</script>
+	<link href="http://cdn.bootcss.com/Swiper/4.4.2/css/swiper.min.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="./css/index.css" />
+	<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+	<script src="http://cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+	<script src="http://cdn.bootcss.com/iScroll/5.2.0/iscroll.min.js"></script>
+	<script type="text/javascript">
+        const musicMp3 = './bgm.mp3';
+    </script>
+</head>
+<body>
+<!----------------弹窗------------------->
+<div class="popMain" id="errorAnswer">
+	<p id="errorAnswerText">X</p>
+	<button type="button"><span>00:00</span></button>
+</div>
+<div class="popMain" id="noPrize">
+	<button type="button"><span>00:00</span></button>
+</div>
+<div class="popMain" id="prize">
+	<div>
+		<img src="./images/lucky_text.gif" /><span></span>
+	</div>
+	<button type="button"><span>00:00</span></button>
+</div>
+<div class="popBg" id="popBg"></div>
+<!---------------主界面------------------>
+<div id="startPage" class="mainBox" style="opacity: 0; transform: translateY(40px);">
+	<div class="mainBoxTitle" style="opacity: 0; transform: translateY(10px);"></div>
+	<div class="startPage" style="opacity: 0; transform: translateY(10px);">
+		<img id="page_1_1" src="./images/page_1_1.png" style="width: 5.23rem; top: 0.64rem; left: 0.56rem; opacity: 0; transform: translateY(10px);" />
+		<img id="page_1_logo" src="./images/logo.png" style="width: 1.81rem; top: 7.44rem; left: 2.32rem; opacity: 0; transform: translateY(10px);" />
+		<img id="page_1_2" src="./images/page_1_2.png" style="width: 3.75rem; top: 1.68rem; left: 1.31rem; opacity: 0; transform: translateY(10px);" />
+		<img class="page_1_3" src="./images/page_1_3.png" style="width: 0.43rem; top: 1.4rem; left: 0.56rem; opacity: 0; transform: translateY(10px);" />
+		<img class="page_1_3" src="./images/page_1_3.png" style="width: 0.43rem; top: 1.4rem; right: 0.56rem; opacity: 0; transform: translateY(10px);" />
+		<!-- <img id="page_1_4" src="./images/page_1_4.png" style="width: 2.9rem; top: 4.09rem; left: 1.79rem; opacity: 0; transform: translateY(10px);" /> -->
+		<img id="page_1_4" src="./images/page_1_4.png" style="width: 5.8rem; top: 3.59rem; left: 0.292rem; opacity: 0; transform: translateY(10px);" />
+		<div class="startDate" style="opacity: 0; transform: translateY(10px);">
+			今日场将于<br/>2018年12月XX日
+		</div>
+	</div>
+	<img id="qieyuan_1" src="./images/yuan.png" style="width: 0.1rem; height: 0.1rem; left: 3.25rem; top: 6.28rem; z-index: 2; display: none;" />
+	<img id="qieyuan_2" src="./images/yuan.png" style="width: 13.6rem; height: 13.6rem; left: -3.52rem; top: -0.9rem; z-index: 2; display: none;" />
+	<img id="endDate" src="./images/5d.png" style="width: 5.14rem; height: 4.6rem; left: 0.7rem; top: 3.6rem; z-index: 2; opacity: 0;" />
+	<img id="page_1_5" src="./images/page_1_5.png" style="width: 1.06rem; height: 0.26rem; left: 2.4rem; top: 7.7rem; z-index: 2; opacity: 0; transform: translateY(20px);" />
+	<div id="startPage2" class="startPage2"></div>
+	<div id="startPage3" class="startPage3">
+		<img id="qieyuan_22" src="./images/yuan.png" style="width: 1.65rem; left: 2.5rem; top: 5.2rem; z-index: 3; display: none;" />
+		<img id="endDate_2" src="./images/5d.png" style="width: 1.6rem; left: 2.28rem; top: 5.01rem; z-index: 3; display: none;" />
+		<img id="page_1_52" src="./images/page_1_5.png" style="width: 1.06rem; height: 0.26rem; left: 2.3rem; top: 6.5rem; z-index: 3; display: none;" />
+	</div>
+	<div id="startPage_TG" class="startPage_TG">
+		<div class="timeOut">
+			<span id="tgTimeOut">00:10</span>
+		</div>
+	</div>
+	<!--答题部分-->
+	<div id="questionPage" class="questionPage">
+		<!-- <h3>1.女性上火后不应吃哪种食物？</h3>
+		<ul>
+			<li onclick="selectThis(0);">A - 黄瓜</li>
+			<li onclick="selectThis(1);" class="onthis">B - 绿茶</li>
+			<li onclick="selectThis(2);">C - 柚子</li>
+			<li onclick="selectThis(3);">D - 胡萝卜</li>
+		</ul>
+		<button type="button"></button>
+		<div class="timeOut">
+			<span id="questionTimeOut">00:10</span>
+		</div> -->
+	</div>
+	<!--答题等待-->
+	<div id="waiting" class="waiting">
+		<div class="timeOut">
+			00:00
+		</div>
+	</div>
+	<!--排行榜-->
+	<div id="rankingList" class="rankingList">
+		<div id="wrapper" class="scrollerBox">
+			<ul>
+				<!-- <li>
+					<span class="order">01</span><img src="./images/pop_bg.png" /><span class="userName">XXXX</span>
+				</li> -->
+			</ul>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	var pageHeight = window.innerHeight;
+	var pageWidth = window.innerWidth;
+	$('#popBg').height(pageHeight);
+	/////////////////////////////////////////////////////////
+	//全局计时器
+	var nowRunTime = 0;
+	var pageInterval = setInterval(function(){
+		nowRunTime++;
+	}, 1000);
+	/////////////////////////////////////////////////////////
+
+	var nowTime = 2;//游戏规则读秒时间
+	var questionNum = 1;//答题题目的序号
+	var questionID = false;//答题题目的ID
+	var questionChoic = false;//选择的当前题目答案编号
+	var questionChoicID = false;//选择的当前题目答案ID
+	var solveTimeOutInt;//答题倒计时的计时函数
+	var showQuestionTime = [10, 60, 110, 160, 210, 260];//答题时间（每道题距离答题剩余的秒数）
+
+	/////////////////////////////////////////////////////////
+	if(showQuestionTime[0] > 0){
+		//当首题答题时间>0时，启动开场动画
+		startAnimation();
+	}else{
+		$('.startPage').hide();
+		$('#qieyuan_1').hide();
+		$('#qieyuan_2').hide();
+		$('#endDate').hide();
+		$('#page_1_5').hide();
+		$('#startPage2').hide();
+		$('#startPage3').hide();
+		$('#startPage_TG').hide();
+		showMain();
+		if(showQuestionTime[5] > 0){
+			//答题等待
+			var thisI = 0;
+			for (var i=0; i<=showQuestionTime.length-1; i++) {
+				if(showQuestionTime[i] > 0){
+					thisI = i;
+					break;
+				}
+			}
+			questionNum = thisI+1;
+			console.log('答题等待,当前题目编号：'+questionNum);
+			$('#waiting').show();
+			waitingTimeOut();
+		}else{
+			//所有题目已答完，打开排行榜
+			console.log('所有题目已答完，打开排行榜');
+			openRankingList();
+		}
+	}
+	function showMain(){
+		$('#startPage').css({
+			"opacity":1,
+			"transform":"translateY(0)",
+		});
+		$('#startPage .mainBoxTitle').css({
+			"opacity":1,
+			"transform":"translateY(0)",
+		});
+	}
+	/////////////////////////////////////////////////////////
+	//--------------------------动画--------------------------//
+	//开场动画
+	function startAnimation(){
+		var basicTimeline = anime.timeline();
+		basicTimeline
+		.add({
+			targets: '#startPage',
+			opacity: 1,
+			translateY: 0,
+			easing: 'easeInOutQuad',
+			duration: 500
+		})
+		.add({
+			targets: '#startPage .mainBoxTitle',
+			opacity: 1,
+			translateY: 0,
+			easing: 'easeInOutQuad',
+			duration: 500
+		})
+		.add({
+			targets: '#startPage .startPage',
+			opacity: 1,
+			translateY: 0,
+			easing: 'easeInOutQuad',
+			duration: 500,
+			offset: '-=200'
+		})
+		.add({
+			targets: '#page_1_1',
+			opacity: 1,
+			translateY: 0,
+			easing: 'easeInOutQuad',
+			duration: 500,
+			offset: '-=200'
+		})
+		.add({
+			targets: '#page_1_logo',
+			opacity: 1,
+			translateY: 0,
+			easing: 'easeInOutQuad',
+			duration: 500,
+			offset: '-=500'
+		})
+		.add({
+			targets: '#page_1_2',
+			opacity: 1,
+			translateY: 0,
+			easing: 'easeInOutQuad',
+			duration: 500,
+			offset: '-=200'
+		})
+		.add({
+			targets: '#startPage .startPage .page_1_3',
+			opacity: 1,
+			translateY: 0,
+			easing: 'easeInOutQuad',
+			duration: 500,
+			offset: '-=200'
+		})
+		.add({
+			targets: '#startPage .startPage .startDate',
+			opacity: 1,
+			translateY: 0,
+			easing: 'easeInOutQuad',
+			duration: 500,
+			offset: '-=200'
+		})
+		.add({
+			targets: '#page_1_4',
+			opacity: 1,
+			translateY: 0,
+			scale: 0.5,
+			easing: 'easeInOutQuad',
+			duration: 700,
+			offset: '-=200',
+			complete: function(anim) {
+				updateTime();
+				var gotoTGOutTime = showQuestionTime[0];
+				if(gotoTGOutTime < 0){gotoTGOutTime = 0.5;}
+				console.log('距离答题游戏开始还有：'+gotoTGOutTime+"秒")
+				setTimeout(function(){
+					gotoTG();
+				}, gotoTGOutTime*1000);
+			}
+		});
+	}
+	//切换过场至规则页
+	function gotoTG(){
+		$('#qieyuan_1').show();
+		var basicTimelineTG = anime.timeline();
+		basicTimelineTG
+		.add({
+			targets: '#qieyuan_1',
+			scale: 150,
+			translateY: '-0.0012rem',
+			translateX: 0,
+			easing: 'easeInOutQuad',
+			duration: 700,
+			complete: function(anim) {
+				$('#startPage2').show();
+				$('#qieyuan_2').show();
+				$('#qieyuan_1').hide();
+			}
+		})
+		.add({
+			targets: '#qieyuan_2',
+			scale: 0.29,
+			easing: 'easeInOutQuad',
+			duration: 700,
+		})
+		.add({
+			targets: '#endDate',
+			scale: 0.5,
+			opacity: 1,
+			easing: 'easeInOutQuad',
+			duration: 500,
+			offset: '-=500',
+			complete: function(anim) {
+				$('#startPage3').show();
+				$('.startPage').hide();
+			}
+		})
+		.add({
+			targets: '#startPage3',
+			opacity: 1,
+			easing: 'easeInOutQuad',
+			duration: 500,
+			offset: '+=800',
+			complete: function(anim) {
+				$('#startPage2').hide();
+			}
+		})
+		.add({
+			targets: '#qieyuan_2',
+			scale: 0.12,
+			translateY: '11rem',
+			translateX: '1.2rem',
+			easing: 'easeInOutQuad',
+			duration: 700,
+			offset: '-=500'
+		})
+		.add({
+			targets: '#endDate',
+			scale: 0.31,
+			translateY: '3.3rem',
+			translateX: '-0.3rem',
+			easing: 'easeInOutQuad',
+			duration: 700,
+			offset: '-=700'
+		})
+		.add({
+			targets: '#page_1_5',
+			translateY: 0,
+			opacity: 1,
+			easing: 'easeInOutQuad',
+			duration: 700,
+			offset: '-=700',
+			complete: function(anim) {
+				setTimeout(function(){
+					$('#qieyuan_2').hide();
+					$('#qieyuan_22').show();
+					$('#endDate').hide();
+					$('#endDate_2').show();
+					$('#page_1_5').hide();
+					$('#page_1_52').show();
+					$('#startPage3').css('z-index',2);
+					$('#startPage_TG').show();
+					$('#tgTimeOut').html(formatNumToTime(nowTime));
+				},990)
+			}
+		})
+		.add({
+			targets: '#startPage3',
+			translateY: 150,
+			translateX: -50,
+			scale: 0.9,
+			rotate: 10,
+			opacity: 0,
+			easing: 'easeInOutQuad',
+			duration: 800,
+			offset: '+=1000',
+			complete: function(anim) {
+				$('#startPage3').hide();
+				tgTimeOut();
+			}
+		});
+
+		//游戏规则读秒
+		function tgTimeOut(){
+			$('#tgTimeOut').html(formatNumToTime(nowTime));
+			setTimeout(function(){
+				if(nowTime > 0){
+					nowTime--
+					tgTimeOut();
+				}else{
+					console.log('开始答题，题目编号：'+questionNum);
+					$('#startPage_TG').css('z-index',2);
+					$('#questionPage').show();
+					ajaxQuestion(questionNum);
+					var basicTimelineGotoQuestion = anime.timeline();
+					basicTimelineGotoQuestion
+					.add({
+						targets: '#startPage_TG',
+						translateY: 150,
+						translateX: -50,
+						scale: 0.9,
+						rotate: 10,
+						opacity: 0,
+						easing: 'easeInOutQuad',
+						duration: 800,
+						complete: function(anim) {
+							$('#startPage_TG').hide();
+						}
+					});
+				}
+			}, 1000);
+		}
+	}
+	
+	//--------------------------答题--------------------------//
+	//等待读秒状态切换至下一题
+	function showQuestion(){
+		$('#waiting').css('z-index',2);
+		$('#questionPage').show();
+		$('#questionPage').html('');
+		ajaxQuestion(questionNum);
+
+		//撕纸动画
+		var basicTimelineWating = anime.timeline();
+		basicTimelineWating
+		.add({
+			targets: '#waiting',
+			translateY: 150,
+			translateX: -50,
+			scale: 0.9,
+			rotate: 10,
+			opacity: 0,
+			easing: 'easeInOutQuad',
+			duration: 800,
+			offset: '+=1000',
+			complete: function(anim) {
+				//撕页动画后恢复waiting的位置
+				$('#waiting').hide();
+				$('#waiting').css({
+					"transform":"translateY(0) translateX(0) scale(1) rotate(0)",
+					"opacity":1,
+					"z-index":1
+				});
+			}
+		});
+	}
+
+	//选择答案
+	function selectThis(n, answerID, _self){
+		console.log('选择答案：'+n+" 答案ID："+answerID);
+		questionChoic = n;
+		questionChoicID = answerID;
+		$('#questionPage ul > li').removeClass('onthis');
+		$(_self).addClass('onthis');
+	}
+
+	//--------------------------Ajax获取题目--------------------------//
+	function ajaxQuestion(n){//n为题目的编号，共6题
+		$.ajax({
+            type: "GET",
+            url: "./test_question.html",
+            dataType: "json",
+            timeout: 10000,//10秒
+            data: {
+                'questionNum' : n,//题目编号1-6
+            },
+            success: function(msg){
+                console.log(msg);
+                if(msg.result){
+                	questionID = msg.id;
+                	//渲染Html
+                	var answerListHtml = '';
+                	for (var i = 0; i<=msg.answer.length-1; i++) {
+                		var obj = {
+				            answerID:msg.answer[i].id,
+				            answer:msg.answer[i].text,
+				            n:i
+				        };
+				        answerListHtml =  answerListHtml + substitute(questionListTemplate,obj);
+                	}
+                	obj = {}
+                	obj.questionNum = n;
+                	obj.title = msg.title;
+                	obj.questionList = answerListHtml;
+                	$('#questionPage').html(substitute(questionTemplate, obj));
+
+                	//获取题目后启动答题倒计时
+                	console.log('题目获取完毕，当前题目编号：'+n+" 当前题目ID："+questionID);
+                	solveTimeOut();
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                //alert('ajax通信出错');
+                console.log('ajax通信出错');
+            }
+        });
+
+        var questionTemplate = [
+			'<h3>{questionNum}.{title}</h3>',
+			'<ul>',
+				'{questionList}',
+			'</ul>',
+			'<button type="button" onclick="ajaxSubmitAnswer(\'normal\');"></button>',
+			'<div class="timeOut">',
+				'<span id="questionTimeOut">00:08</span>',
+			'</div>'
+		].join("");
+
+		var questionListTemplate = '<li onclick="selectThis({n},{answerID},this);">{answer}</li>';
+
+		function solveTimeOut(){
+			var solveTimeNum = 8;//8秒倒计时
+			$('#questionTimeOut').html(formatNumToTime(solveTimeNum));
+			solveTimeOutInt = setInterval(function(){
+				console.log('答题倒计时：'+solveTimeNum);
+				solveTimeNum--;
+				$('#questionTimeOut').html(formatNumToTime(solveTimeNum));
+				if(solveTimeNum == 0){
+					clearInterval(solveTimeOutInt);
+					if(questionChoic){
+						//用户选择了答案，自动提交
+						ajaxSubmitAnswer('normal');
+					}else{
+						//用户未选择答案，答题错误
+						ajaxSubmitAnswer('delay');
+					}
+				}
+			}, 1000);
+		}
+	}
+
+	//--------------------------Ajax提交答案--------------------------//
+	function ajaxSubmitAnswer(state){
+		if(state == 'delay'){
+			questionChoic = 'delay';
+		}
+		if(questionChoic === false){
+			alert("请选择答案！");
+			return false;
+		}
+		clearInterval(solveTimeOutInt);
+		console.log('题目序号：'+questionNum + " 答案序号："+questionChoic);
+		$.ajax({
+            type: "GET",
+            url: "./test_answer.html",
+            dataType: "json",
+            timeout: 10000,//10秒
+            data: {
+                'questionNum' : questionNum,//题目编号1-6
+                'questionID' : questionID,//题目ID
+                'answer' : questionChoic,//答案
+                'answerID' : questionChoicID,//答案ID
+                'state' : state//当state为'delay'时，表示用户超时未答题，需要接口返回正确答案用以显示
+            },
+            success: function(msg){
+                console.log(msg);
+                if(msg.result){
+                	//渲染Html
+                	if(msg.okAnswer){
+                		//答题正确
+                		console.log("答题正确");
+                		if(msg.prize > 0){
+                			//中奖
+                			console.log("中奖："+msg.prize+"元");
+                			showPopPrize('prize', msg.prize);
+                		}else{
+                			//奖品已发完
+                			console.log("谢谢参与");
+                			showPop('noPrize');
+                		}
+                	}else{
+                		//答题错误
+                		console.log("答题错误");
+                		$('#errorAnswerText').html(msg.rightAnswer);
+                		showPop('errorAnswer');
+                	}
+                	questionNum++;
+                	questionChoic = false;
+                	questionChoicID = false;
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                //alert('ajax通信出错');
+                console.log('ajax通信出错');
+            }
+        });
+	}
+
+	//打开弹窗
+	function showPop(id){
+		$('#popBg').fadeIn(300);
+		$('#'+id).fadeIn(300);
+		popTimeOut(id);
+	}
+
+	//打开中奖弹窗
+	function showPopPrize(id, prize){
+		$('#popBg').fadeIn(300);
+		$('#'+id).fadeIn(300);
+
+		var openPrizeTimeNum = 3;
+		var openPrizeTimeOut = setInterval(function(){
+			console.log('拆红包倒计时：'+openPrizeTimeNum);
+			openPrizeTimeNum--;
+			if(openPrizeTimeNum == 0){
+				clearInterval(openPrizeTimeOut);
+				showPopPrizeLuckNum(id, prize);
+			}
+		}, 1000);
+	}
+
+	//显示中奖金额
+	function showPopPrizeLuckNum(id, prize){
+		$('#'+id+' button').show();
+		$('#'+id).css('background','url("./images/pop_bg_lucky_2.png") no-repeat');
+		$('#'+id).css('background-size','100%');
+		$('#'+id+' div span').html(prize);
+		$('#'+id+' div').show();
+
+		popTimeOut(id);
+	}
+
+	//弹窗倒计时
+	function popTimeOut(id){
+		var nowPopTime = 5;
+
+		popTimeOutFun();
+		function popTimeOutFun(){
+			console.log(nowPopTime);
+			$('#'+id+' button span').html(formatNumToTime(nowPopTime));
+			setTimeout(function(){
+				if(nowPopTime > 0){
+					nowPopTime--;
+					popTimeOutFun();
+				}else{
+					closePopAndWait(id);
+				}
+			}, 1000)
+		}
+	}
+
+	//关闭弹窗，打开等待页
+	function closePopAndWait(id){
+		$('#popBg').fadeOut(300);
+		$('#'+id).fadeOut(300);
+
+		if(questionNum <= 6){
+			$('#questionPage').css('z-index',2);
+			$('#waiting').show();
+		}else{
+			console.log('打开榜单');
+			openRankingList();
+		}
+
+		//撕纸动画
+		var basicTimelineClosePopAndWait = anime.timeline();
+		basicTimelineClosePopAndWait
+		.add({
+			targets: '#questionPage',
+			translateY: 150,
+			translateX: -50,
+			scale: 0.9,
+			rotate: 10,
+			opacity: 0,
+			easing: 'easeInOutQuad',
+			duration: 800,
+			offset: '+=1000',
+			complete: function(anim) {
+				//撕页动画后恢复questionPage的位置
+				$('#questionPage').hide();
+				$('#questionPage').css({
+					"transform":"translateY(0) translateX(0) scale(1) rotate(0)",
+					"opacity":1,
+					"z-index":1
+				})
+				if(id == 'prize'){
+					$('#'+id+' button').hide();
+					$('#'+id).css('background','url("./images/pop_bg_lucky_1.png") no-repeat');
+					$('#'+id).css('background-size','100%');
+					$('#'+id+' div span').html('');
+					$('#'+id+' div').hide();
+				}
+			}
+		});
+
+		if(questionNum > 6){
+			//答题全部完成后，不加载倒计时动画
+			return false;
+		}else{
+			waitingTimeOut();
+		}
+	}
+
+	//等待页倒计时
+	function waitingTimeOut(){
+		updateTime();
+		var nextQuestionTime = parseInt(showQuestionTime[questionNum-1]);
+		console.log('距离下一题时间：'+nextQuestionTime+"秒")
+		nextQuestionTimeOutFun();
+		function nextQuestionTimeOutFun(){
+			$('#waiting .timeOut').html(formatNumToTime(nextQuestionTime));
+			setTimeout(function(){
+				if(nextQuestionTime > 0){
+					nextQuestionTime--;
+					nextQuestionTimeOutFun();
+				}else{
+					console.log('打开下一题');
+					showQuestion();
+				}
+			}, 1000)
+		}
+	}
+
+	//打开排行榜
+	function openRankingList(){
+		var rankingTemplate = [
+			'<li>',
+				'<span class="order">{n}</span><img src="{pic}" /><span class="userName">{userName}</span>',
+			'</li>'
+		].join("");
+
+		$.ajax({
+            type: "GET",
+            url: "./test_ranking.html",
+            dataType: "json",
+            timeout: 10000,//10秒
+            success: function(msg){
+                console.log(msg);
+                if(msg.result){
+                	var obj = {};
+	                for(var i=0; i<=msg.list.length-1; i++){
+	                	obj.n = i+1;
+	                	if(obj.n < 10){
+	                		obj.n = '0' + obj.n;
+	                	}
+	                	obj.pic = msg.list[i].pic;
+	                	obj.userName = msg.list[i].userName;
+	                	$('#wrapper ul').append(substitute(rankingTemplate, obj));
+	                }
+	                $('#rankingList').show();
+	                $('#questionPage').css('z-index',3);
+	                setTimeout(function(){
+						var myScroll = new IScroll("#wrapper",{
+							mouseWheel: true,
+				    		scrollbars: false,
+							scrollX: false,
+						});
+					}, 200);
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                //alert('ajax通信出错');
+                console.log('ajax通信出错');
+            }
+        });
+	}
+
+	//更新游戏剩余答题时间
+	function updateTime(){
+		for(var i=0; i<=showQuestionTime.length-1; i++){
+			showQuestionTime[i] = showQuestionTime[i] - nowRunTime;
+			if(showQuestionTime[i] < 0){
+				showQuestionTime[i] = 0;
+			}
+		}
+		nowRunTime = 0;
+	}
+	
+	/////////////////////////////////////////////////////////
+	function formatNumToTime(value){//输入数字，返回时间，数字单位秒
+		var secondTime = parseInt(value);// 秒
+        var minuteTime = 0;// 分
+        var hourTime = 0;// 小时
+        if(secondTime > 60) {//如果秒数大于60，将秒数转换成整数
+            //获取分钟，除以60取整数，得到整数分钟
+            minuteTime = parseInt(secondTime / 60);
+            //获取秒数，秒数取佘，得到整数秒数
+            secondTime = parseInt(secondTime % 60);
+            //如果分钟大于60，将分钟转换成小时
+            if(minuteTime > 60) {
+                //获取小时，获取分钟除以60，得到整数小时
+                hourTime = parseInt(minuteTime / 60);
+                //获取小时后取佘的分，获取分钟除以60取佘的分
+                minuteTime = parseInt(minuteTime % 60);
+            }
+        }
+        var result = "" + parseInt(secondTime);// + "秒";
+        if(result < 10){
+        	result = '0'+result;
+        }
+
+        if(minuteTime > 0) {
+        	if(parseInt(minuteTime) < 10){
+	        	minuteTime = '0'+minuteTime;
+	        }
+            result = "" + minuteTime + ":" + result;
+        }else{
+        	result = "00:" + result;
+        }
+        /*if(hourTime > 0) {
+            result = "" + parseInt(hourTime) + "：" + result;
+        }*/
+        return result;
+	}
+
+	function substitute(str,object){
+        return str.replace(/\\?\{([^}]+)\}/g, function(match, name){
+            if (match.charAt(0) == '\\') return match.slice(1);
+            return (object[name] != undefined) ? object[name] : '';
+        });
+    }
+
+    //Music
+	function AlexMusicBox(obj){this.init(obj);}
+	AlexMusicBox.prototype = {
+	    musicTemplate:[
+	        '<div id="musicMenu" class="musicMenu">',
+	            '<audio id="Jaudio" class="media-audio" preload loop="loop">',
+	                '<source src="{mp3}" type="audio/mpeg">',
+	            '</audio>',
+	            '<div class="control">',
+	                '<div class="control-after"></div>',
+	            '</div>',
+	        '</div>'
+	    ].join(""),
+	    init:function(obj){
+	        var _self = this;
+	        this.musicMp3 = obj.music;
+	        this.getMusicHtml();
+	        this.audio = document.getElementById("Jaudio");
+	        this.musicPlay = false;
+	        $("#musicMenu").click(function(){
+	            if(_self.musicPlay){
+	                console.log('music Off');
+	                _self.audio.pause();
+	                $("#musicMenu .control").removeClass("show_loop");
+	                _self.musicPlay = false;
+	            }else{
+	                console.log('music On');
+	                _self.audioAutoPlay();
+	                _self.audio.volume = 0.5;
+	            }
+	        });
+	        this.audioAutoPlay('Jaudio');
+	    },
+	    getMusicHtml:function(){
+	        obj = {
+	            mp3:this.musicMp3
+	        };
+	        $('body').append(this.substitute(this.musicTemplate,obj));
+	    },
+	    audioAutoPlay:function(){
+	        var _self = this;
+	        $("#musicMenu .control").addClass("show_loop");
+	        this.musicPlay = true;
+	        var play = function(){
+	                _self.audio.play();
+	                document.removeEventListener("touchstart",play, false);
+	            };
+	        this.audio.play();
+	        document.addEventListener("WeixinJSBridgeReady", function () {
+	            play();
+	        }, false);
+	        document.addEventListener('YixinJSBridgeReady', function() {
+	            play();
+	        }, false);
+	        document.addEventListener("touchstart",play, false);
+	    },
+	    substitute:function(str,object){//模板内容替换函数
+	        return str.replace(/\\?\{([^}]+)\}/g, function(match, name){
+	            if (match.charAt(0) == '\\') return match.slice(1);
+	            return (object[name] != undefined) ? object[name] : '';
+	        });
+	    }
+	}
+	$(function($) {
+	    //禁止页面默认的触摸滑动事件
+	    /*document.addEventListener('touchmove', function (event) {
+	        event.preventDefault();
+	    }, false);*/
+	    
+	    if(typeof(musicMp3) == "undefined"){
+	    }else if(musicMp3 != '' && musicMp3 != null){
+	        var musicBox = new AlexMusicBox({music:musicMp3});
+	        musicBox;
+	    }
+	});
+</script>
+</body>
+</html>
