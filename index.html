@@ -107,12 +107,6 @@
 	var pageWidth = window.innerWidth;
 	$('#popBg').height(pageHeight);
 	/////////////////////////////////////////////////////////
-	//全局计时器
-	var nowRunTime = 0;
-	var pageInterval = setInterval(function(){
-		nowRunTime++;
-	}, 1000);
-	/////////////////////////////////////////////////////////
 
 	var nowTime = 2;//游戏规则读秒时间
 	var questionNum = 1;//答题题目的序号
@@ -122,6 +116,19 @@
 	var solveTimeOutInt;//答题倒计时的计时函数
 	var showQuestionTime = [10, 60, 110, 160, 210, 260];//答题时间（每道题距离答题剩余的秒数）
 
+	/////////////////////////////////////////////////////////
+	//全局计时器
+	var pageInterval = setInterval(function(){
+		for(var i=0 ;i<=showQuestionTime.length-1; i++){
+			showQuestionTime[i]--;
+			if(showQuestionTime[i] < 0){
+				showQuestionTime[i] = 0;
+			}
+		}
+		if(showQuestionTime[showQuestionTime.length-1] <= 0){
+			clearInterval(pageInterval);
+		}
+	}, 1000);
 	/////////////////////////////////////////////////////////
 	if(showQuestionTime[0] > 0){
 		//当首题答题时间>0时，启动开场动画
@@ -242,7 +249,6 @@
 			duration: 700,
 			offset: '-=200',
 			complete: function(anim) {
-				updateTime();
 				var gotoTGOutTime = showQuestionTime[0];
 				if(gotoTGOutTime < 0){gotoTGOutTime = 0.5;}
 				console.log('距离答题游戏开始还有：'+gotoTGOutTime+"秒")
@@ -666,7 +672,6 @@
 
 	//等待页倒计时
 	function waitingTimeOut(){
-		updateTime();
 		var nextQuestionTime = parseInt(showQuestionTime[questionNum-1]);
 		console.log('距离下一题时间：'+nextQuestionTime+"秒")
 		nextQuestionTimeOutFun();
@@ -726,17 +731,6 @@
                 console.log('ajax通信出错');
             }
         });
-	}
-
-	//更新游戏剩余答题时间
-	function updateTime(){
-		for(var i=0; i<=showQuestionTime.length-1; i++){
-			showQuestionTime[i] = showQuestionTime[i] - nowRunTime;
-			if(showQuestionTime[i] < 0){
-				showQuestionTime[i] = 0;
-			}
-		}
-		nowRunTime = 0;
 	}
 	
 	/////////////////////////////////////////////////////////
