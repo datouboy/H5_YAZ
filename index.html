@@ -851,9 +851,11 @@
 	}
 	$(function($) {
 	    //禁止页面默认的触摸滑动事件
-	    /*document.addEventListener('touchmove', function (event) {
-	        event.preventDefault();
-	    }, false);*/
+	    document.addEventListener('touchmove', function (event) {
+	    	if(event.path.length < 11){
+	    		event.preventDefault();
+	    	}
+	    }, false);
 	    
 	    if(typeof(musicMp3) == "undefined"){
 	    }else if(musicMp3 != '' && musicMp3 != null){

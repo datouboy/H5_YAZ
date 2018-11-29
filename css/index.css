@@ -138,5 +138,5 @@ img {display: block; position: absolute;}
 .mainBox .rankingList ul li * {display: inline-block; vertical-align: middle; position: relative;}
 .mainBox .rankingList ul li img {height:0.75rem; width: 0.75rem; border-radius: 0.08rem;}
 .mainBox .rankingList ul li span {font-size: 0.3rem;}
-.mainBox .rankingList ul li span.order {padding-right: 0.4rem;}
+.mainBox .rankingList ul li span.order {width: 0.8rem;}
 .mainBox .rankingList ul li span.userName {padding-left: 0.2rem;}
