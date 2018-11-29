@@ -115,6 +115,7 @@
 	var questionChoicID = false;//选择的当前题目答案ID
 	var solveTimeOutInt;//答题倒计时的计时函数
 	var showQuestionTime = [10, 60, 110, 160, 210, 260];//答题时间（每道题距离答题剩余的秒数）
+	var submitLock = true;//答题锁，再每题答完后，锁住按钮，新问题加载后解锁
 
 	/////////////////////////////////////////////////////////
 	//全局计时器
@@ -426,6 +427,9 @@
 
 	//选择答案
 	function selectThis(n, answerID, _self){
+		if(!submitLock){
+			return false;
+		}
 		console.log('选择答案：'+n+" 答案ID："+answerID);
 		questionChoic = n;
 		questionChoicID = answerID;
@@ -466,6 +470,7 @@
                 	//获取题目后启动答题倒计时
                 	console.log('题目获取完毕，当前题目编号：'+n+" 当前题目ID："+questionID);
                 	solveTimeOut();
+                	submitLock = true;
                 }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -510,6 +515,10 @@
 
 	//--------------------------Ajax提交答案--------------------------//
 	function ajaxSubmitAnswer(state){
+		if(!submitLock){
+			return false;
+		}
+		submitLock = false;//答题后锁上答题锁
 		if(state == 'delay'){
 			questionChoic = 'delay';
 		}
