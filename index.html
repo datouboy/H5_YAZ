@@ -117,27 +117,48 @@
 	var showQuestionTime = [10, 60, 110, 160, 210, 260];//答题时间（每道题距离答题剩余的秒数）
 	var submitLock = true;//答题锁，再每题答完后，锁住按钮，新问题加载后解锁
 	var pageInterval;//全局计时器
+	var nextQuestionTime = false;//等待页距离下一题时间
 
 	/////////////////////////////////////////////////////////
 	//内容加载后Ajax同步页面时间
-	$.ajax({
-        type: "GET",
-        url: "./test_showtime.html",
-        dataType: "json",
-        timeout: 10000,//10秒
-        success: function(msg){
-            if(msg.result){
-            	console.log("同-步-时-间：", msg.showTime);
-            	showQuestionTime = msg.showTime;//对时
-            	globalPageInterval();//启动全局计时器
-            	startGame();//启动游戏
-            }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            //alert('ajax通信出错');
-            console.log('ajax通信出错');
-        }
-    });
+	synchronizationTime('start');
+	function synchronizationTime(type){
+		$.ajax({
+	        type: "GET",
+	        url: "./test_showtime.html",
+	        dataType: "json",
+	        timeout: 10000,//10秒
+	        success: function(msg){
+	            if(msg.result){
+	            	console.log("同-步-时-间：", msg.showTime);
+	            	showQuestionTime = msg.showTime;//对时
+	            	if(type == 'start'){
+	            		console.log('开始游戏！');
+	            		globalPageInterval();//启动全局计时器
+	            		startGame();//启动游戏
+	            	}
+	            }
+	        },
+	        error: function(XMLHttpRequest, textStatus, errorThrown){
+	            //alert('ajax通信出错');
+	            console.log('ajax通信出错');
+	        }
+	    });
+	}
+
+    /////////////////////////////////////////////////////////
+    //页面息屏监测
+    document.addEventListener('visibilitychange', function() {
+    	//console.log( document.visibilityState, document.hidden);
+		if(!document.hidden){
+			console.log("页面激活，更新对时");
+			synchronizationTime('default');
+			if(nextQuestionTime !== false){
+				nextQuestionTime = parseInt(showQuestionTime[questionNum-1]);
+				console.log('更新倒计时时间:'+nextQuestionTime);
+			}
+		}
+	})
 
 	/////////////////////////////////////////////////////////
 	//全局计时器
@@ -709,7 +730,7 @@
 
 	//等待页倒计时
 	function waitingTimeOut(){
-		var nextQuestionTime = parseInt(showQuestionTime[questionNum-1]);
+		nextQuestionTime = parseInt(showQuestionTime[questionNum-1]);
 		console.log('距离下一题时间：'+nextQuestionTime+"秒")
 		nextQuestionTimeOutFun();
 		function nextQuestionTimeOutFun(){
@@ -720,6 +741,7 @@
 					nextQuestionTimeOutFun();
 				}else{
 					console.log('打开下一题');
+					nextQuestionTime = false;
 					showQuestion();
 				}
 			}, 1000)
