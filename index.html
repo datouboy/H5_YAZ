@@ -116,53 +116,81 @@
 	var solveTimeOutInt;//答题倒计时的计时函数
 	var showQuestionTime = [10, 60, 110, 160, 210, 260];//答题时间（每道题距离答题剩余的秒数）
 	var submitLock = true;//答题锁，再每题答完后，锁住按钮，新问题加载后解锁
+	var pageInterval;//全局计时器
+
+	/////////////////////////////////////////////////////////
+	//内容加载后Ajax同步页面时间
+	$.ajax({
+        type: "GET",
+        url: "./test_showtime.html",
+        dataType: "json",
+        timeout: 10000,//10秒
+        success: function(msg){
+            if(msg.result){
+            	console.log("同-步-时-间：", msg.showTime);
+            	showQuestionTime = msg.showTime;//对时
+            	globalPageInterval();//启动全局计时器
+            	startGame();//启动游戏
+            }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            //alert('ajax通信出错');
+            console.log('ajax通信出错');
+        }
+    });
 
 	/////////////////////////////////////////////////////////
 	//全局计时器
-	var pageInterval = setInterval(function(){
-		for(var i=0 ;i<=showQuestionTime.length-1; i++){
-			showQuestionTime[i]--;
-			if(showQuestionTime[i] < 0){
-				showQuestionTime[i] = 0;
-			}
-		}
-		if(showQuestionTime[showQuestionTime.length-1] <= 0){
-			clearInterval(pageInterval);
-		}
-	}, 1000);
-	/////////////////////////////////////////////////////////
-	if(showQuestionTime[0] > 0){
-		//当首题答题时间>0时，启动开场动画
-		startAnimation();
-	}else{
-		$('.startPage').hide();
-		$('#qieyuan_1').hide();
-		$('#qieyuan_2').hide();
-		$('#endDate').hide();
-		$('#page_1_5').hide();
-		$('#startPage2').hide();
-		$('#startPage3').hide();
-		$('#startPage_TG').hide();
-		showMain();
-		if(showQuestionTime[5] > 0){
-			//答题等待
-			var thisI = 0;
-			for (var i=0; i<=showQuestionTime.length-1; i++) {
-				if(showQuestionTime[i] > 0){
-					thisI = i;
-					break;
+	function globalPageInterval(){
+		pageInterval = setInterval(function(){
+			for(var i=0 ;i<=showQuestionTime.length-1; i++){
+				showQuestionTime[i]--;
+				if(showQuestionTime[i] < 0){
+					showQuestionTime[i] = 0;
 				}
 			}
-			questionNum = thisI+1;
-			console.log('答题等待,当前题目编号：'+questionNum);
-			$('#waiting').show();
-			waitingTimeOut();
+			if(showQuestionTime[showQuestionTime.length-1] <= 0){
+				clearInterval(pageInterval);
+			}
+		}, 1000);
+	}
+	/////////////////////////////////////////////////////////
+	function startGame(){
+		if(showQuestionTime[0] > 0){
+			//当首题答题时间>0时，启动开场动画
+			startAnimation();
 		}else{
-			//所有题目已答完，打开排行榜
-			console.log('所有题目已答完，打开排行榜');
-			openRankingList();
+			$('.startPage').hide();
+			$('#qieyuan_1').hide();
+			$('#qieyuan_2').hide();
+			$('#endDate').hide();
+			$('#page_1_5').hide();
+			$('#startPage2').hide();
+			$('#startPage3').hide();
+			$('#startPage_TG').hide();
+			showMain();
+			if(showQuestionTime[5] > 0){
+				//答题等待
+				var thisI = 0;
+				for (var i=0; i<=showQuestionTime.length-1; i++) {
+					if(showQuestionTime[i] > 0){
+						thisI = i;
+						break;
+					}
+				}
+				questionNum = thisI+1;
+				console.log('答题等待,当前题目编号：'+questionNum);
+				$('#waiting').show();
+				waitingTimeOut();
+			}else{
+				//所有题目已答完，打开排行榜
+				console.log('所有题目已答完，打开排行榜');
+				openRankingList();
+			}
 		}
 	}
+
+	//跳过开始动画的界面准备
 	function showMain(){
 		$('#startPage').css({
 			"opacity":1,
