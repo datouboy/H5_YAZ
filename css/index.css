@@ -51,7 +51,7 @@ img {display: block; position: absolute;}
 .popMain {width: 3.4rem; height: 4.97rem; background: url('../images/pop_bg_error.png') no-repeat; background-size: 100%; position: absolute; top: 2.44rem; left: 2.05rem; z-index: 102; display: none;}
 .popMain button {width: 2.5rem; height: 0.67rem; border: none; background:url('../images/submit_bg.png') no-repeat; background-size: 100%; position: absolute; left: 0.44rem; bottom: -1.6rem; font-size: 14px; color: #fff;}
 
-#errorAnswer #errorAnswerText{font-size: 1.7rem; line-height: 1.7rem; padding-top: 1.4rem; text-align: center;}
+#errorAnswer #errorAnswerText{font-size: 0.7rem; line-height: 1.7rem; padding-top: 1.4rem; text-align: center;}
 #noPrize {background: url('../images/pop_bg_noprize.png') no-repeat; background-size: 100%;}
 #prize {background: url('../images/pop_bg_lucky_1.png') no-repeat; background-size: 100%;}
 #prize button {display: none;}
@@ -125,6 +125,21 @@ img {display: block; position: absolute;}
 .mainBox .questionPage ul li::after {right: 0.2rem;}
 .mainBox .questionPage ul li.onthis {background: #ff7835; transition: all .3s;}
 .mainBox .questionPage button {width: 1.99rem; height: 0.47rem; background: url('../images/submit.png') no-repeat; background-size: 100%; border: none; margin-top: -0.2rem;}
+
+.mainBox .questionPage .scrollerBox {position:relative; width: 6.38rem; height: 5.78rem; overflow: hidden;}
+
+.mainBox .questionPage.size_1 h3 {font-size: 0.24rem; line-height: 0.34rem; padding: 0.1rem 0.4rem 0 0.4rem; text-align: left;}
+.mainBox .questionPage.size_1 ul {padding-top: 0.1rem;}
+.mainBox .questionPage.size_1 ul li {font-size: 0.24rem; height: auto; line-height: 0.28rem; width: 4.26rem; margin: 0 auto 0.1rem auto; border-radius: 0.4rem; background: #00a4b0; border: 2px solid #000; text-align: center; position: relative; transition: all .3s; text-align: left; padding: 0.05rem 0.5rem;}
+.mainBox .questionPage.size_1 ul li.onthis {background: #ff7835; transition: all .3s;}
+.mainBox .questionPage.size_1 button {margin-top: 0;}
+
+.mainBox .questionPage.size_2 h3 {font-size: 0.24rem; line-height: 0.34rem; padding: 0.1rem 0.4rem 0 0.4rem; text-align: left;}
+
+.mainBox .questionPage.size_3 ul {padding-top: 0.1rem;}
+.mainBox .questionPage.size_3 ul li {font-size: 0.24rem; height: auto; line-height: 0.28rem; width: 4.26rem; margin: 0 auto 0.1rem auto; border-radius: 0.4rem; background: #00a4b0; border: 2px solid #000; text-align: center; position: relative; transition: all .3s; text-align: left; padding: 0.05rem 0.5rem;}
+.mainBox .questionPage.size_3 ul li.onthis {background: #ff7835; transition: all .3s;}
+.mainBox .questionPage.size_3 button {margin-top: 0;}
 
 /*-----------------等待------------------*/
 .mainBox .waiting {width: 6.38rem; height: 8.7rem; background:url('../images/mainbox_bg4.png') no-repeat; background-size: 100%; position: absolute; left: 0.09rem; top: 1.2rem; text-align: center; display: none;}

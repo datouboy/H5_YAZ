@@ -74,16 +74,19 @@
 	<!--答题部分-->
 	<div id="questionPage" class="questionPage">
 		<!-- <h3>1.女性上火后不应吃哪种食物？</h3>
-		<ul>
-			<li onclick="selectThis(0);">A - 黄瓜</li>
-			<li onclick="selectThis(1);" class="onthis">B - 绿茶</li>
-			<li onclick="selectThis(2);">C - 柚子</li>
-			<li onclick="selectThis(3);">D - 胡萝卜</li>
-		</ul>
-		<button type="button"></button>
+		<div id="questionPageBox" class="scrollerBox">
+			<ul>
+				<li onclick="selectThis(0);">A - 黄瓜</li>
+				<li onclick="selectThis(1);" class="onthis">B - 绿茶</li>
+				<li onclick="selectThis(2);">C - 柚子</li>
+				<li onclick="selectThis(3);">D - 胡萝卜</li>
+			</ul>
+			<button type="button"></button>
+		</div>
 		<div class="timeOut">
 			<span id="questionTimeOut">00:10</span>
-		</div> -->
+		</div>
+		 -->
 	</div>
 	<!--答题等待-->
 	<div id="waiting" class="waiting">
@@ -103,6 +106,30 @@
 	</div>
 </div>
 <script type="text/javascript">
+	//添加数组中删除指定元素的方法
+    Array.prototype.indexOf = function(val) { 
+        for (var i = 0; i < this.length; i++) { 
+            if (this[i] == val) return i;
+        } 
+        return -1;
+    }; 
+    Array.prototype.remove = function(val) { 
+        var index = this.indexOf(val); 
+        if (index > -1) { 
+            this.splice(index, 1); 
+        } 
+    };
+    //数组排序
+    var compare = function (x, y) {
+	    if (x < y) {
+	        return -1;
+	    } else if (x > y) {
+	        return 1;
+	    } else {
+	        return 0;
+	    }
+	}
+	/////////////////////////////////////////////////////////
 	var pageHeight = window.innerHeight;
 	var pageWidth = window.innerWidth;
 	$('#popBg').height(pageHeight);
@@ -111,13 +138,14 @@
 	var nowTime = 2;//游戏规则读秒时间
 	var questionNum = 1;//答题题目的序号
 	var questionID = false;//答题题目的ID
-	var questionChoic = false;//选择的当前题目答案编号
-	var questionChoicID = false;//选择的当前题目答案ID
+	var questionChoic = [];//选择的当前题目答案编号
+	var questionChoicID = [];//选择的当前题目答案ID
 	var solveTimeOutInt;//答题倒计时的计时函数
 	var showQuestionTime = [10, 60, 110, 160, 210, 260];//答题时间（每道题距离答题剩余的秒数）
 	var submitLock = true;//答题锁，再每题答完后，锁住按钮，新问题加载后解锁
 	var pageInterval;//全局计时器
 	var nextQuestionTime = false;//等待页距离下一题时间
+	var questionPageScroll;//答题区滚动条
 
 	/////////////////////////////////////////////////////////
 	//内容加载后Ajax同步页面时间
@@ -479,18 +507,26 @@
 		if(!submitLock){
 			return false;
 		}
-		console.log('选择答案：'+n+" 答案ID："+answerID);
-		questionChoic = n;
-		questionChoicID = answerID;
-		$('#questionPage ul > li').removeClass('onthis');
-		$(_self).addClass('onthis');
+		if($(_self).attr('class') == ""){
+			$(_self).addClass("onthis");
+			questionChoic.push(n);
+			questionChoicID.push(answerID);
+		}else{
+			$(_self).removeClass("onthis");
+			questionChoic.remove(n);
+			questionChoicID.remove(answerID);
+		}
+		questionChoic.sort(compare);
+		questionChoicID.sort(compare);
+
+		console.log('选择答案：', questionChoic, " 答案ID：", questionChoicID);
 	}
 
 	//--------------------------Ajax获取题目--------------------------//
 	function ajaxQuestion(n){//n为题目的编号，共6题
 		$.ajax({
             type: "GET",
-            url: "./test_question.html",
+            url: "./test_question2.html",
             dataType: "json",
             timeout: 10000,//10秒
             data: {
@@ -516,6 +552,33 @@
                 	obj.questionList = answerListHtml;
                 	$('#questionPage').html(substitute(questionTemplate, obj));
 
+                	switch (msg.style) {
+                		case 1:
+                			console.log("样式1:题目文章多，答案文字多");
+							$('#questionPage').attr('class','questionPage size_1');
+                			break;
+                		case 2:
+                			console.log("样式2:题目文章多，答案文字少");
+							$('#questionPage').attr('class','questionPage size_2');
+                			break;
+                		case 3:
+                			console.log("样式3:题目文章少，答案文字多");
+							$('#questionPage').attr('class','questionPage size_3');
+                			break;
+                		default:
+                			console.log("默认样式:题目文章少，答案文字少");
+							$('#questionPage').attr('class','questionPage');
+                	}
+
+                	//加载滚动条
+                	setTimeout(function(){
+						questionPageScroll = new IScroll("#questionPageBox",{
+							mouseWheel: true,
+							scrollbars: true,
+							scrollX: false,
+						});
+					}, 200);
+
                 	//获取题目后启动答题倒计时
                 	console.log('题目获取完毕，当前题目编号：'+n+" 当前题目ID："+questionID);
                 	solveTimeOut();
@@ -530,16 +593,20 @@
 
         var questionTemplate = [
 			'<h3>{questionNum}.{title}</h3>',
-			'<ul>',
-				'{questionList}',
-			'</ul>',
-			'<button type="button" onclick="ajaxSubmitAnswer(\'normal\');"></button>',
+			'<div id="questionPageBox" class="scrollerBox">',
+				'<div>',
+					'<ul>',
+						'{questionList}',
+					'</ul>',
+					'<button type="button" onclick="ajaxSubmitAnswer(\'normal\');"></button>',
+				'</div>',
+			'</div>',
 			'<div class="timeOut">',
 				'<span id="questionTimeOut">00:08</span>',
 			'</div>'
 		].join("");
 
-		var questionListTemplate = '<li onclick="selectThis({n},{answerID},this);">{answer}</li>';
+		var questionListTemplate = '<li onclick="selectThis({n},{answerID},this);" class="">{answer}</li>';
 
 		function solveTimeOut(){
 			var solveTimeNum = 8;//8秒倒计时
@@ -550,7 +617,7 @@
 				$('#questionTimeOut').html(formatNumToTime(solveTimeNum));
 				if(solveTimeNum == 0){
 					clearInterval(solveTimeOutInt);
-					if(questionChoic){
+					if(questionChoic.length > 1){
 						//用户选择了答案，自动提交
 						ajaxSubmitAnswer('normal');
 					}else{
@@ -570,8 +637,9 @@
 		submitLock = false;//答题后锁上答题锁
 		if(state == 'delay'){
 			questionChoic = 'delay';
+			questionChoicID = 'delay';
 		}
-		if(questionChoic === false){
+		if(questionChoic.length < 1){
 			alert("请选择答案！");
 			return false;
 		}
@@ -585,8 +653,8 @@
             data: {
                 'questionNum' : questionNum,//题目编号1-6
                 'questionID' : questionID,//题目ID
-                'answer' : questionChoic,//答案
-                'answerID' : questionChoicID,//答案ID
+                'answer' : questionChoic == 'delay' ? questionChoic : questionChoic.join(""),//答案
+                'answerID' : questionChoicID == 'delay' ? questionChoicID : questionChoicID.join(""),//答案ID
                 'state' : state//当state为'delay'时，表示用户超时未答题，需要接口返回正确答案用以显示
             },
             success: function(msg){
@@ -612,8 +680,11 @@
                 		showPop('errorAnswer');
                 	}
                 	questionNum++;
-                	questionChoic = false;
-                	questionChoicID = false;
+                	questionChoic = [];
+                	questionChoicID = [];
+
+                	questionPageScroll.destroy();
+                	questionPageScroll=null;
                 }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -779,7 +850,7 @@
 	                setTimeout(function(){
 						var myScroll = new IScroll("#wrapper",{
 							mouseWheel: true,
-				    		scrollbars: false,
+							scrollbars: false,
 							scrollX: false,
 						});
 					}, 200);
