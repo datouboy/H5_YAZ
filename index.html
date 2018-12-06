@@ -853,9 +853,13 @@
 					var obj = {};
 					for(var i=0; i<=msg.list.length-1; i++){
 						obj.n = i+1;
-						if(obj.n < 10){
-							obj.n = '0' + obj.n;
-						}
+						if(obj.n == 1){
+							obj.n = '<img src="./images/p1.png" />';
+						}else if(obj.n == 2){
+							obj.n = '<img src="./images/p2.png" />';
+						}else if(obj.n == 3){
+							obj.n = '<img src="./images/p3.png" />';
+						}						
 						obj.pic = msg.list[i].pic;
 						obj.userName = msg.list[i].userName;
 						$('#wrapper ul').append(substitute(rankingTemplate, obj));

@@ -118,7 +118,7 @@ img {display: block; position: absolute;}
 .mainBox .questionPage {width: 6.38rem; height: 8.7rem; background:url('../images/mainbox_bg_dt.png') no-repeat; background-size: 100%; position: absolute; left: 0.09rem; top: 1.2rem; text-align: center; display: none;}
 .mainBox .questionPage h3 {font-size: 0.36rem; height: 1.24rem; line-height: 1.24rem; margin-top: 0.26rem; text-align: center;}
 .mainBox .questionPage ul {padding-top: 0.5rem;}
-.mainBox .questionPage ul li {height: 0.6rem; line-height: 0.6rem; width: 5.26rem; margin: 0 auto 0.5rem auto; border-radius: 0.4rem; background: #00a4b0; border: 2px solid #000; text-align: center; position: relative; transition: all .3s; position: relative;}
+.mainBox .questionPage ul li {height: 0.6rem; line-height: 0.6rem; width: 5.26rem; margin: 0 auto 0.48rem auto; border-radius: 0.4rem; background: #00a4b0; border: 2px solid #000; text-align: center; position: relative; transition: all .3s; position: relative;}
 .mainBox .questionPage ul li::before,
 .mainBox .questionPage ul li::after {display: block; content: ''; width: 0.18rem; height: 0.18rem; background: #dae43b; border: 1px solid #000; position: absolute; top: 0.19rem; border-radius: 50%;}
 .mainBox .questionPage ul li::before {left: 0.2rem;}
@@ -129,12 +129,13 @@ img {display: block; position: absolute;}
 
 .mainBox .questionPage .scrollerBox {position:relative; width: 6.38rem; height: 5.78rem; overflow: hidden;}
 
-.mainBox .questionPage h3.size_1 {font-size: 0.24rem; line-height: 0.29rem; padding: 0.1rem 0.4rem 0 0.4rem; text-align: left;}
-.mainBox .questionPage h3.size_2 {font-size: 0.26rem; line-height: 0.34rem; padding: 0.1rem 0.4rem 0 0.4rem; text-align: left;}
-.mainBox .questionPage h3.size_3 {font-size: 0.32rem; line-height: 0.42rem; padding: 0.16rem 0.4rem 0 0.4rem; height: 1.08rem; text-align: left;}
+.mainBox .questionPage h3.size_1 {font-size: 0.24rem; line-height: 0.29rem; padding: 0.1rem 0.4rem 0 0.4rem;}
+.mainBox .questionPage h3.size_2 {font-size: 0.26rem; line-height: 0.34rem; padding: 0.1rem 0.4rem 0 0.4rem;}
+.mainBox .questionPage h3.size_3 {font-size: 0.32rem; line-height: 0.42rem; padding: 0.19rem 0.4rem 0 0.4rem; height: 1.06rem;}
 
-.mainBox .questionPage ul.size_1 {padding-top: 0.2rem;}
-.mainBox .questionPage ul.size_1 li {font-size: 0.24rem; height: auto; min-height: 0.28rem; line-height: 0.28rem; width: 4.26rem; margin: 0 auto 0.1rem auto; border-radius: 0.4rem; background: #00a4b0; border: 2px solid #000; text-align: center; position: relative; transition: all .3s; text-align: left; padding: 0.16rem 0.5rem;}
+.mainBox .questionPage ul.size_1 {padding-top: 0.5rem;}
+.mainBox .questionPage ul.size_1 li {font-size: 0.24rem; height: auto; min-height: 0.28rem; line-height: 0.28rem; width: 4.26rem; margin: 0 auto 0.48rem auto; border-radius: 0.15rem; background: #00a4b0; border: 2px solid #000; text-align: center; position: relative; transition: all .3s; text-align: left; padding: 0.16rem 0.5rem;}
+.mainBox .questionPage ul.size_1 li.onthis {background: #ff7835; transition: all .3s;}
 .mainBox .questionPage button.submit.size_1 {margin-top: 0;}
 
 /*-----------------等待------------------*/
@@ -145,9 +146,10 @@ img {display: block; position: absolute;}
 .mainBox .rankingList {width: 6.38rem; height: 8.7rem; background:url('../images/mainbox_bg5.jpg') no-repeat; background-size: 100%; position: absolute; left: 0.09rem; top: 1.2rem; text-align: center; display: none;}
 .mainBox .rankingList .scrollerBox {position:relative; width: 5rem; height: 6rem; margin: 1.5rem auto 0 auto; overflow: hidden;}
 .mainBox .rankingList ul {}
-.mainBox .rankingList ul li {height: 0.74rem; line-height: 0.74rem; padding: 0.22rem 0.05rem; text-align: left; border-bottom:1px dashed #4f2510;}
+.mainBox .rankingList ul li {height: 0.44rem; line-height: 0.44rem; padding: 0.08rem 0.05rem; text-align: left; border:1px solid #fff; background: #ffbc9a; border-radius: 0.1rem; margin-bottom: 0.1rem;}
 .mainBox .rankingList ul li * {display: inline-block; vertical-align: middle; position: relative;}
-.mainBox .rankingList ul li img {height:0.75rem; width: 0.75rem; border-radius: 0.08rem;}
+.mainBox .rankingList ul li img {height:0.44rem; width: 0.44rem; border-radius: 0.08rem;}
 .mainBox .rankingList ul li span {font-size: 0.3rem;}
-.mainBox .rankingList ul li span.order {width: 0.8rem;}
+.mainBox .rankingList ul li span.order {width: 0.5rem; text-align: center; padding-left: 0.1rem; padding-right: 0.2rem;}
 .mainBox .rankingList ul li span.userName {padding-left: 0.2rem;}
+.mainBox .rankingList ul li span img {display: inline-block; height: 0.44rem; width: auto;}
