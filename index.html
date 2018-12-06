@@ -552,22 +552,34 @@
 					obj.questionList = answerListHtml;
 					$('#questionPage').html(substitute(questionTemplate, obj));
 
-					switch (msg.style) {
+					switch (msg.style.title) {
 						case 1:
-							console.log("样式1:题目文章多，答案文字多");
-							$('#questionPage').attr('class','questionPage size_1');
+							console.log("标题样式1: 字数多");//4行字
+							$('#questionTitle').attr('class','size_1');
 							break;
 						case 2:
-							console.log("样式2:题目文章多，答案文字少");
-							$('#questionPage').attr('class','questionPage size_2');
+							console.log("标题样式1: 字数偏多");//3行字
+							$('#questionTitle').attr('class','size_2');
 							break;
 						case 3:
-							console.log("样式3:题目文章少，答案文字多");
-							$('#questionPage').attr('class','questionPage size_3');
+							console.log("标题样式1: 字数偏少");//2行字
+							$('#questionTitle').attr('class','size_3');
 							break;
 						default:
-							console.log("默认样式:题目文章少，答案文字少");
-							$('#questionPage').attr('class','questionPage');
+							console.log("标题默认样式: 字数最少");//1行字
+							$('#questionTitle').attr('class','');
+					}
+
+					switch (msg.style.article) {
+						case 1:
+							console.log("答案样式: 答案文字多");
+							$('#questionUl').attr('class','size_1');
+							$('#questionPageBox div button.submit').attr('class','submit size_1');
+							break;
+						default:
+							console.log("答案默认样式: 答案文字少");
+							$('#questionUl').attr('class','');
+							$('#questionPageBox div button.submit').attr('class','submit');
 					}
 
 					//加载滚动条
@@ -593,10 +605,10 @@
 		});
 
 		var questionTemplate = [
-			'<h3>{questionNum}.{title}</h3>',
+			'<h3 id="questionTitle">{questionNum}.{title}</h3>',
 			'<div id="questionPageBox" class="scrollerBox">',
 				'<div>',
-					'<ul>',
+					'<ul id="questionUl">',
 						'{questionList}',
 					'</ul>',
 					'<button class="submit" type="button" onclick="ajaxSubmitAnswer(\'normal\');"></button>',
