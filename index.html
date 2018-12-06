@@ -977,6 +977,7 @@
 		//禁止页面默认的触摸滑动事件
 		document.body.addEventListener('touchmove', function (e) {
 			var touchmoveClose = true;
+			//此处有坑，e返回的信息，在不同浏览器有所不同，需要根据浏览器做区分
 			if(e.path){
 				for(var iz = 0; iz<=e.path.length-1; iz++){
 					if(e.path[iz].className == 'scrollerBox'){
