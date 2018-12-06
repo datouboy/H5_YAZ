@@ -22,8 +22,8 @@
 	<script src="http://cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
 	<script src="http://cdn.bootcss.com/iScroll/5.2.0/iscroll.min.js"></script>
 	<script type="text/javascript">
-        const musicMp3 = './bgm.mp3';
-    </script>
+		const musicMp3 = './bgm.mp3';
+	</script>
 </head>
 <body>
 <!----------------弹窗------------------->
@@ -107,27 +107,27 @@
 </div>
 <script type="text/javascript">
 	//添加数组中删除指定元素的方法
-    Array.prototype.indexOf = function(val) { 
-        for (var i = 0; i < this.length; i++) { 
-            if (this[i] == val) return i;
-        } 
-        return -1;
-    }; 
-    Array.prototype.remove = function(val) { 
-        var index = this.indexOf(val); 
-        if (index > -1) { 
-            this.splice(index, 1); 
-        } 
-    };
-    //数组排序
-    var compare = function (x, y) {
-	    if (x < y) {
-	        return -1;
-	    } else if (x > y) {
-	        return 1;
-	    } else {
-	        return 0;
-	    }
+	Array.prototype.indexOf = function(val) { 
+		for (var i = 0; i < this.length; i++) { 
+			if (this[i] == val) return i;
+		} 
+		return -1;
+	}; 
+	Array.prototype.remove = function(val) { 
+		var index = this.indexOf(val); 
+		if (index > -1) { 
+			this.splice(index, 1); 
+		} 
+	};
+	//数组排序
+	var compare = function (x, y) {
+		if (x < y) {
+			return -1;
+		} else if (x > y) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 	/////////////////////////////////////////////////////////
 	var pageHeight = window.innerHeight;
@@ -152,32 +152,32 @@
 	synchronizationTime('start');
 	function synchronizationTime(type){
 		$.ajax({
-	        type: "GET",
-	        url: "./test_showtime.html",
-	        dataType: "json",
-	        timeout: 10000,//10秒
-	        success: function(msg){
-	            if(msg.result){
-	            	console.log("同-步-时-间：", msg.showTime);
-	            	showQuestionTime = msg.showTime;//对时
-	            	if(type == 'start'){
-	            		console.log('开始游戏！');
-	            		globalPageInterval();//启动全局计时器
-	            		startGame();//启动游戏
-	            	}
-	            }
-	        },
-	        error: function(XMLHttpRequest, textStatus, errorThrown){
-	            //alert('ajax通信出错');
-	            console.log('ajax通信出错');
-	        }
-	    });
+			type: "GET",
+			url: "./test_showtime.html",
+			dataType: "json",
+			timeout: 10000,//10秒
+			success: function(msg){
+				if(msg.result){
+					console.log("同-步-时-间：", msg.showTime);
+					showQuestionTime = msg.showTime;//对时
+					if(type == 'start'){
+						console.log('开始游戏！');
+						globalPageInterval();//启动全局计时器
+						startGame();//启动游戏
+					}
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown){
+				//alert('ajax通信出错');
+				console.log('ajax通信出错');
+			}
+		});
 	}
 
-    /////////////////////////////////////////////////////////
-    //页面息屏监测
-    document.addEventListener('visibilitychange', function() {
-    	//console.log( document.visibilityState, document.hidden);
+	/////////////////////////////////////////////////////////
+	//页面息屏监测
+	document.addEventListener('visibilitychange', function() {
+		//console.log( document.visibilityState, document.hidden);
 		if(!document.hidden){
 			console.log("页面激活，更新对时");
 			synchronizationTime('default');
@@ -525,80 +525,81 @@
 	//--------------------------Ajax获取题目--------------------------//
 	function ajaxQuestion(n){//n为题目的编号，共6题
 		$.ajax({
-            type: "GET",
-            url: "./test_question2.html",
-            dataType: "json",
-            timeout: 10000,//10秒
-            data: {
-                'questionNum' : n,//题目编号1-6
-            },
-            success: function(msg){
-                console.log(msg);
-                if(msg.result){
-                	questionID = msg.id;
-                	//渲染Html
-                	var answerListHtml = '';
-                	for (var i = 0; i<=msg.answer.length-1; i++) {
-                		var obj = {
-				            answerID:msg.answer[i].id,
-				            answer:msg.answer[i].text,
-				            n:i
-				        };
-				        answerListHtml =  answerListHtml + substitute(questionListTemplate,obj);
-                	}
-                	obj = {}
-                	obj.questionNum = n;
-                	obj.title = msg.title;
-                	obj.questionList = answerListHtml;
-                	$('#questionPage').html(substitute(questionTemplate, obj));
+			type: "GET",
+			url: "./test_question2.html",
+			dataType: "json",
+			timeout: 10000,//10秒
+			data: {
+				'questionNum' : n,//题目编号1-6
+			},
+			success: function(msg){
+				console.log(msg);
+				if(msg.result){
+					questionID = msg.id;
+					//渲染Html
+					var answerListHtml = '';
+					for (var i = 0; i<=msg.answer.length-1; i++) {
+						var obj = {
+							answerID:msg.answer[i].id,
+							answer:msg.answer[i].text,
+							n:i
+						};
+						answerListHtml =  answerListHtml + substitute(questionListTemplate,obj);
+					}
+					obj = {}
+					obj.questionNum = n;
+					obj.title = msg.title;
+					obj.questionList = answerListHtml;
+					$('#questionPage').html(substitute(questionTemplate, obj));
 
-                	switch (msg.style) {
-                		case 1:
-                			console.log("样式1:题目文章多，答案文字多");
+					switch (msg.style) {
+						case 1:
+							console.log("样式1:题目文章多，答案文字多");
 							$('#questionPage').attr('class','questionPage size_1');
-                			break;
-                		case 2:
-                			console.log("样式2:题目文章多，答案文字少");
+							break;
+						case 2:
+							console.log("样式2:题目文章多，答案文字少");
 							$('#questionPage').attr('class','questionPage size_2');
-                			break;
-                		case 3:
-                			console.log("样式3:题目文章少，答案文字多");
+							break;
+						case 3:
+							console.log("样式3:题目文章少，答案文字多");
 							$('#questionPage').attr('class','questionPage size_3');
-                			break;
-                		default:
-                			console.log("默认样式:题目文章少，答案文字少");
+							break;
+						default:
+							console.log("默认样式:题目文章少，答案文字少");
 							$('#questionPage').attr('class','questionPage');
-                	}
+					}
 
-                	//加载滚动条
-                	setTimeout(function(){
+					//加载滚动条
+					setTimeout(function(){
 						questionPageScroll = new IScroll("#questionPageBox",{
 							mouseWheel: true,
 							scrollbars: true,
 							scrollX: false,
+							//preventDefault: false,
 						});
 					}, 200);
 
-                	//获取题目后启动答题倒计时
-                	console.log('题目获取完毕，当前题目编号：'+n+" 当前题目ID："+questionID);
-                	solveTimeOut();
-                	submitLock = true;
-                }
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown){
-                //alert('ajax通信出错');
-                console.log('ajax通信出错');
-            }
-        });
+					//获取题目后启动答题倒计时
+					console.log('题目获取完毕，当前题目编号：'+n+" 当前题目ID："+questionID);
+					solveTimeOut();
+					submitLock = true;
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown){
+				//alert('ajax通信出错');
+				console.log('ajax通信出错');
+			}
+		});
 
-        var questionTemplate = [
+		var questionTemplate = [
 			'<h3>{questionNum}.{title}</h3>',
 			'<div id="questionPageBox" class="scrollerBox">',
 				'<div>',
 					'<ul>',
 						'{questionList}',
 					'</ul>',
-					'<button type="button" onclick="ajaxSubmitAnswer(\'normal\');"></button>',
+					'<button class="submit" type="button" onclick="ajaxSubmitAnswer(\'normal\');"></button>',
 				'</div>',
 			'</div>',
 			'<div class="timeOut">',
@@ -606,7 +607,7 @@
 			'</div>'
 		].join("");
 
-		var questionListTemplate = '<li onclick="selectThis({n},{answerID},this);" class="">{answer}</li>';
+		var questionListTemplate = '<li onclick="selectThis({n},{answerID},this);" class=""><button class="selectButton" type="button">{answer}</button>{answer}</li>';
 
 		function solveTimeOut(){
 			var solveTimeNum = 8;//8秒倒计时
@@ -634,64 +635,66 @@
 		if(!submitLock){
 			return false;
 		}
-		submitLock = false;//答题后锁上答题锁
 		if(state == 'delay'){
 			questionChoic = 'delay';
 			questionChoicID = 'delay';
+		}else{
+			if(questionChoic.length < 1){
+				alert("请选择答案！");
+				return false;
+			}
 		}
-		if(questionChoic.length < 1){
-			alert("请选择答案！");
-			return false;
-		}
+		submitLock = false;//答题后锁上答题锁
+		
 		clearInterval(solveTimeOutInt);
 		console.log('题目序号：'+questionNum + " 答案序号："+questionChoic);
 		$.ajax({
-            type: "GET",
-            url: "./test_answer.html",
-            dataType: "json",
-            timeout: 10000,//10秒
-            data: {
-                'questionNum' : questionNum,//题目编号1-6
-                'questionID' : questionID,//题目ID
-                'answer' : questionChoic == 'delay' ? questionChoic : questionChoic.join(""),//答案
-                'answerID' : questionChoicID == 'delay' ? questionChoicID : questionChoicID.join(""),//答案ID
-                'state' : state//当state为'delay'时，表示用户超时未答题，需要接口返回正确答案用以显示
-            },
-            success: function(msg){
-                console.log(msg);
-                if(msg.result){
-                	//渲染Html
-                	if(msg.okAnswer){
-                		//答题正确
-                		console.log("答题正确");
-                		if(msg.prize > 0){
-                			//中奖
-                			console.log("中奖："+msg.prize+"元");
-                			showPopPrize('prize', msg.prize);
-                		}else{
-                			//奖品已发完
-                			console.log("谢谢参与");
-                			showPop('noPrize');
-                		}
-                	}else{
-                		//答题错误
-                		console.log("答题错误");
-                		$('#errorAnswerText').html(msg.rightAnswer);
-                		showPop('errorAnswer');
-                	}
-                	questionNum++;
-                	questionChoic = [];
-                	questionChoicID = [];
+			type: "GET",
+			url: "./test_answer.html",
+			dataType: "json",
+			timeout: 10000,//10秒
+			data: {
+				'questionNum' : questionNum,//题目编号1-6
+				'questionID' : questionID,//题目ID
+				'answer' : questionChoic == 'delay' ? questionChoic : questionChoic.join(""),//答案
+				'answerID' : questionChoicID == 'delay' ? questionChoicID : questionChoicID.join(""),//答案ID
+				'state' : state//当state为'delay'时，表示用户超时未答题，需要接口返回正确答案用以显示
+			},
+			success: function(msg){
+				console.log(msg);
+				if(msg.result){
+					//渲染Html
+					if(msg.okAnswer){
+						//答题正确
+						console.log("答题正确");
+						if(msg.prize > 0){
+							//中奖
+							console.log("中奖："+msg.prize+"元");
+							showPopPrize('prize', msg.prize);
+						}else{
+							//奖品已发完
+							console.log("谢谢参与");
+							showPop('noPrize');
+						}
+					}else{
+						//答题错误
+						console.log("答题错误");
+						$('#errorAnswerText').html(msg.rightAnswer);
+						showPop('errorAnswer');
+					}
+					questionNum++;
+					questionChoic = [];
+					questionChoicID = [];
 
-                	questionPageScroll.destroy();
-                	questionPageScroll=null;
-                }
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown){
-                //alert('ajax通信出错');
-                console.log('ajax通信出错');
-            }
-        });
+					questionPageScroll.destroy();
+					questionPageScroll=null;
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown){
+				//alert('ajax通信出错');
+				console.log('ajax通信出错');
+			}
+		});
 	}
 
 	//打开弹窗
@@ -828,161 +831,174 @@
 		].join("");
 
 		$.ajax({
-            type: "GET",
-            url: "./test_ranking.html",
-            dataType: "json",
-            timeout: 10000,//10秒
-            success: function(msg){
-                console.log(msg);
-                if(msg.result){
-                	var obj = {};
-	                for(var i=0; i<=msg.list.length-1; i++){
-	                	obj.n = i+1;
-	                	if(obj.n < 10){
-	                		obj.n = '0' + obj.n;
-	                	}
-	                	obj.pic = msg.list[i].pic;
-	                	obj.userName = msg.list[i].userName;
-	                	$('#wrapper ul').append(substitute(rankingTemplate, obj));
-	                }
-	                $('#rankingList').show();
-	                $('#questionPage').css('z-index',3);
-	                setTimeout(function(){
+			type: "GET",
+			url: "./test_ranking.html",
+			dataType: "json",
+			timeout: 10000,//10秒
+			success: function(msg){
+				console.log(msg);
+				if(msg.result){
+					var obj = {};
+					for(var i=0; i<=msg.list.length-1; i++){
+						obj.n = i+1;
+						if(obj.n < 10){
+							obj.n = '0' + obj.n;
+						}
+						obj.pic = msg.list[i].pic;
+						obj.userName = msg.list[i].userName;
+						$('#wrapper ul').append(substitute(rankingTemplate, obj));
+					}
+					$('#rankingList').show();
+					$('#questionPage').css('z-index',3);
+					setTimeout(function(){
 						var myScroll = new IScroll("#wrapper",{
 							mouseWheel: true,
 							scrollbars: false,
 							scrollX: false,
 						});
 					}, 200);
-                }
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown){
-                //alert('ajax通信出错');
-                console.log('ajax通信出错');
-            }
-        });
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown){
+				//alert('ajax通信出错');
+				console.log('ajax通信出错');
+			}
+		});
 	}
 	
 	/////////////////////////////////////////////////////////
 	function formatNumToTime(value){//输入数字，返回时间，数字单位秒
 		var secondTime = parseInt(value);// 秒
-        var minuteTime = 0;// 分
-        var hourTime = 0;// 小时
-        if(secondTime > 60) {//如果秒数大于60，将秒数转换成整数
-            //获取分钟，除以60取整数，得到整数分钟
-            minuteTime = parseInt(secondTime / 60);
-            //获取秒数，秒数取佘，得到整数秒数
-            secondTime = parseInt(secondTime % 60);
-            //如果分钟大于60，将分钟转换成小时
-            if(minuteTime > 60) {
-                //获取小时，获取分钟除以60，得到整数小时
-                hourTime = parseInt(minuteTime / 60);
-                //获取小时后取佘的分，获取分钟除以60取佘的分
-                minuteTime = parseInt(minuteTime % 60);
-            }
-        }
-        var result = "" + parseInt(secondTime);// + "秒";
-        if(result < 10){
-        	result = '0'+result;
-        }
+		var minuteTime = 0;// 分
+		var hourTime = 0;// 小时
+		if(secondTime > 60) {//如果秒数大于60，将秒数转换成整数
+			//获取分钟，除以60取整数，得到整数分钟
+			minuteTime = parseInt(secondTime / 60);
+			//获取秒数，秒数取佘，得到整数秒数
+			secondTime = parseInt(secondTime % 60);
+			//如果分钟大于60，将分钟转换成小时
+			if(minuteTime > 60) {
+				//获取小时，获取分钟除以60，得到整数小时
+				hourTime = parseInt(minuteTime / 60);
+				//获取小时后取佘的分，获取分钟除以60取佘的分
+				minuteTime = parseInt(minuteTime % 60);
+			}
+		}
+		var result = "" + parseInt(secondTime);// + "秒";
+		if(result < 10){
+			result = '0'+result;
+		}
 
-        if(minuteTime > 0) {
-        	if(parseInt(minuteTime) < 10){
-	        	minuteTime = '0'+minuteTime;
-	        }
-            result = "" + minuteTime + ":" + result;
-        }else{
-        	result = "00:" + result;
-        }
-        /*if(hourTime > 0) {
-            result = "" + parseInt(hourTime) + "：" + result;
-        }*/
-        return result;
+		if(minuteTime > 0) {
+			if(parseInt(minuteTime) < 10){
+				minuteTime = '0'+minuteTime;
+			}
+			result = "" + minuteTime + ":" + result;
+		}else{
+			result = "00:" + result;
+		}
+		/*if(hourTime > 0) {
+			result = "" + parseInt(hourTime) + "：" + result;
+		}*/
+		return result;
 	}
 
 	function substitute(str,object){
-        return str.replace(/\\?\{([^}]+)\}/g, function(match, name){
-            if (match.charAt(0) == '\\') return match.slice(1);
-            return (object[name] != undefined) ? object[name] : '';
-        });
-    }
+		return str.replace(/\\?\{([^}]+)\}/g, function(match, name){
+			if (match.charAt(0) == '\\') return match.slice(1);
+			return (object[name] != undefined) ? object[name] : '';
+		});
+	}
 
-    //Music
+	//Music
 	function AlexMusicBox(obj){this.init(obj);}
 	AlexMusicBox.prototype = {
-	    musicTemplate:[
-	        '<div id="musicMenu" class="musicMenu">',
-	            '<audio id="Jaudio" class="media-audio" preload loop="loop">',
-	                '<source src="{mp3}" type="audio/mpeg">',
-	            '</audio>',
-	            '<div class="control">',
-	                '<div class="control-after"></div>',
-	            '</div>',
-	        '</div>'
-	    ].join(""),
-	    init:function(obj){
-	        var _self = this;
-	        this.musicMp3 = obj.music;
-	        this.getMusicHtml();
-	        this.audio = document.getElementById("Jaudio");
-	        this.musicPlay = false;
-	        $("#musicMenu").click(function(){
-	            if(_self.musicPlay){
-	                console.log('music Off');
-	                _self.audio.pause();
-	                $("#musicMenu .control").removeClass("show_loop");
-	                _self.musicPlay = false;
-	            }else{
-	                console.log('music On');
-	                _self.audioAutoPlay();
-	                _self.audio.volume = 0.5;
-	            }
-	        });
-	        this.audioAutoPlay('Jaudio');
-	    },
-	    getMusicHtml:function(){
-	        obj = {
-	            mp3:this.musicMp3
-	        };
-	        $('body').append(this.substitute(this.musicTemplate,obj));
-	    },
-	    audioAutoPlay:function(){
-	        var _self = this;
-	        $("#musicMenu .control").addClass("show_loop");
-	        this.musicPlay = true;
-	        var play = function(){
-	                _self.audio.play();
-	                document.removeEventListener("touchstart",play, false);
-	            };
-	        this.audio.play();
-	        document.addEventListener("WeixinJSBridgeReady", function () {
-	            play();
-	        }, false);
-	        document.addEventListener('YixinJSBridgeReady', function() {
-	            play();
-	        }, false);
-	        document.addEventListener("touchstart",play, false);
-	    },
-	    substitute:function(str,object){//模板内容替换函数
-	        return str.replace(/\\?\{([^}]+)\}/g, function(match, name){
-	            if (match.charAt(0) == '\\') return match.slice(1);
-	            return (object[name] != undefined) ? object[name] : '';
-	        });
-	    }
+		musicTemplate:[
+			'<div id="musicMenu" class="musicMenu">',
+				'<audio id="Jaudio" class="media-audio" preload loop="loop">',
+					'<source src="{mp3}" type="audio/mpeg">',
+				'</audio>',
+				'<div class="control">',
+					'<div class="control-after"></div>',
+				'</div>',
+			'</div>'
+		].join(""),
+		init:function(obj){
+			var _self = this;
+			this.musicMp3 = obj.music;
+			this.getMusicHtml();
+			this.audio = document.getElementById("Jaudio");
+			this.musicPlay = false;
+			$("#musicMenu").click(function(){
+				if(_self.musicPlay){
+					console.log('music Off');
+					_self.audio.pause();
+					$("#musicMenu .control").removeClass("show_loop");
+					_self.musicPlay = false;
+				}else{
+					console.log('music On');
+					_self.audioAutoPlay();
+					_self.audio.volume = 0.5;
+				}
+			});
+			this.audioAutoPlay('Jaudio');
+		},
+		getMusicHtml:function(){
+			obj = {
+				mp3:this.musicMp3
+			};
+			$('body').append(this.substitute(this.musicTemplate,obj));
+		},
+		audioAutoPlay:function(){
+			var _self = this;
+			$("#musicMenu .control").addClass("show_loop");
+			this.musicPlay = true;
+			var play = function(){
+					_self.audio.play();
+					document.removeEventListener("touchstart",play, false);
+				};
+			this.audio.play();
+			document.addEventListener("WeixinJSBridgeReady", function () {
+				play();
+			}, false);
+			document.addEventListener('YixinJSBridgeReady', function() {
+				play();
+			}, false);
+			document.addEventListener("touchstart",play, false);
+		},
+		substitute:function(str,object){//模板内容替换函数
+			return str.replace(/\\?\{([^}]+)\}/g, function(match, name){
+				if (match.charAt(0) == '\\') return match.slice(1);
+				return (object[name] != undefined) ? object[name] : '';
+			});
+		}
 	}
 	$(function($) {
-	    //禁止页面默认的触摸滑动事件
-	    document.addEventListener('touchmove', function (event) {
-	    	if(event.path.length < 11){
-	    		event.preventDefault();
-	    	}
-	    }, false);
-	    
-	    if(typeof(musicMp3) == "undefined"){
-	    }else if(musicMp3 != '' && musicMp3 != null){
-	        var musicBox = new AlexMusicBox({music:musicMp3});
-	        musicBox;
-	    }
+		//禁止页面默认的触摸滑动事件
+		document.body.addEventListener('touchmove', function (e) {
+			var touchmoveClose = true;
+			if(e.path){
+				for(var iz = 0; iz<=e.path.length-1; iz++){
+					if(e.path[iz].className == 'scrollerBox'){
+						touchmoveClose = false;
+					}
+				}
+			}else if(e.srcElement.nodeName){
+				if(e.srcElement.nodeName == 'LI' || e.srcElement.nodeName == 'li'){
+					touchmoveClose = false;
+				}
+			}
+			if(touchmoveClose){
+				e.preventDefault();
+				//e.stopPropagation();
+			}
+		}, {passive: false});
+		
+		if(typeof(musicMp3) == "undefined"){
+		}else if(musicMp3 != '' && musicMp3 != null){
+			var musicBox = new AlexMusicBox({music:musicMp3});
+			musicBox;
+		}
 	});
 </script>
 </body>
