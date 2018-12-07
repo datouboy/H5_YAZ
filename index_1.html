@@ -253,7 +253,7 @@
 	}
 	/////////////////////////////////////////////////////////
 	//--------------------------动画--------------------------//
-	//开场动画-背景
+	//开场动画
 	function startAnimation(){
 		var basicTimeline = anime.timeline();
 		basicTimeline
@@ -277,14 +277,68 @@
 			translateY: 0,
 			easing: 'easeInOutQuad',
 			duration: 500,
+			offset: '-=200'
+		})
+		.add({
+			targets: '#page_1_1',
+			opacity: 1,
+			translateY: 0,
+			easing: 'easeInOutQuad',
+			duration: 500,
+			offset: '-=200'
+		})
+		.add({
+			targets: '#page_1_logo',
+			opacity: 1,
+			translateY: 0,
+			easing: 'easeInOutQuad',
+			duration: 500,
+			offset: '-=500'
+		})
+		.add({
+			targets: '#page_1_2',
+			opacity: 1,
+			translateY: 0,
+			easing: 'easeInOutQuad',
+			duration: 500,
+			offset: '-=200'
+		})
+		.add({
+			targets: '#startPage .startPage .page_1_3',
+			opacity: 1,
+			translateY: 0,
+			easing: 'easeInOutQuad',
+			duration: 500,
+			offset: '-=200'
+		})
+		.add({
+			targets: '#startPage .startPage .startDate',
+			opacity: 1,
+			translateY: 0,
+			easing: 'easeInOutQuad',
+			duration: 500,
+			offset: '-=200'
+		})
+		.add({
+			targets: '#page_1_4',
+			opacity: 1,
+			translateY: 0,
+			scale: 0.5,
+			easing: 'easeInOutQuad',
+			duration: 700,
 			offset: '-=200',
 			complete: function(anim) {
-				startAnimationNext();
+				var gotoTGOutTime = showQuestionTime[0];
+				if(gotoTGOutTime < 0){gotoTGOutTime = 0.5;}
+				console.log('距离答题游戏开始还有：'+gotoTGOutTime+"秒")
+				setTimeout(function(){
+					gotoTG();
+				}, gotoTGOutTime*1000);
 			}
 		});
 	}
-	//开场动画前两页
-	function startAnimationNext(){
+	//切换过场至规则页
+	function gotoTG(){
 		$('#qieyuan_1').show();
 		var basicTimelineTG = anime.timeline();
 		basicTimelineTG
@@ -363,13 +417,8 @@
 					$('#page_1_5').hide();
 					$('#page_1_52').show();
 					$('#startPage3').css('z-index',2);
-
-					$('#startPage .startPage').css({
-						"transform":"translateY(0) translateX(0)",
-						"opacity":1,
-						"z-index":1,
-						"display":'block',
-					});
+					$('#startPage_TG').show();
+					$('#tgTimeOut').html(formatNumToTime(nowTime));
 				},990)
 			}
 		})
@@ -385,103 +434,9 @@
 			offset: '+=1000',
 			complete: function(anim) {
 				$('#startPage3').hide();
-				gameTimeOut();
-				//tgTimeOut();
+				tgTimeOut();
 			}
 		});
-
-		//游戏倒计时动画
-		function gameTimeOut(){
-			var gameTimeOutline = anime.timeline();
-			gameTimeOutline
-				.add({
-				targets: '#page_1_1',
-				opacity: 1,
-				translateY: 0,
-				easing: 'easeInOutQuad',
-				duration: 500,
-				offset: '-=200'
-			})
-			.add({
-				targets: '#page_1_logo',
-				opacity: 1,
-				translateY: 0,
-				easing: 'easeInOutQuad',
-				duration: 500,
-				offset: '-=500'
-			})
-			.add({
-				targets: '#page_1_2',
-				opacity: 1,
-				translateY: 0,
-				easing: 'easeInOutQuad',
-				duration: 500,
-				offset: '-=200'
-			})
-			.add({
-				targets: '#startPage .startPage .page_1_3',
-				opacity: 1,
-				translateY: 0,
-				easing: 'easeInOutQuad',
-				duration: 500,
-				offset: '-=200'
-			})
-			.add({
-				targets: '#startPage .startPage .startDate',
-				opacity: 1,
-				translateY: 0,
-				easing: 'easeInOutQuad',
-				duration: 500,
-				offset: '-=200'
-			})
-			.add({
-				targets: '#page_1_4',
-				opacity: 1,
-				translateY: 0,
-				scale: 0.5,
-				easing: 'easeInOutQuad',
-				duration: 700,
-				offset: '-=200',
-				complete: function(anim) {
-					gotoTG();
-				}
-			});
-		}
-
-		//活动规则动画
-		function gotoTG(){
-			$('#startPage_TG').show();
-			$('#startPage_TG').css('z-index', 1);
-			$('#startPage .startPage').css('z-index', 2);
-			$('#tgTimeOut').html(formatNumToTime(nowTime));
-
-			var gotoTGOutTime = showQuestionTime[0];
-			if(gotoTGOutTime < 0){gotoTGOutTime = 0.5;}
-			console.log('距离答题游戏开始还有：'+gotoTGOutTime+"秒")
-			setTimeout(function(){
-				gotoTgTimeOut();
-			}, gotoTGOutTime*1000);
-
-			function gotoTgTimeOut(){
-				var gotoTGOutline = anime.timeline();
-				gotoTGOutline
-					.add({
-					targets: '#startPage .startPage',
-					translateY: 150,
-					translateX: -50,
-					scale: 0.9,
-					rotate: 10,
-					opacity: 0,
-					easing: 'easeInOutQuad',
-					duration: 800,
-					offset: '+=1000',
-					complete: function(anim) {
-						$('#startPage .startPage').hide();
-						tgTimeOut();
-					}
-				});
-			}
-		}
 
 		//游戏规则读秒
 		function tgTimeOut(){
