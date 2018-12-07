@@ -657,7 +657,7 @@
 
 					//获取题目后启动答题倒计时
 					console.log('题目获取完毕，当前题目编号：'+n+" 当前题目ID："+questionID);
-					solveTimeOut();
+					solveTimeOut(msg.time);
 					submitLock = true;
 				}
 			},
@@ -684,8 +684,7 @@
 
 		var questionListTemplate = '<li onclick="selectThis({n},{answerID},this);" class=""><button class="selectButton" type="button">{answer}</button>{answer}</li>';
 
-		function solveTimeOut(){
-			var solveTimeNum = 8;//8秒倒计时
+		function solveTimeOut(solveTimeNum){
 			$('#questionTimeOut').html(formatNumToTime(solveTimeNum));
 			solveTimeOutInt = setInterval(function(){
 				console.log('答题倒计时：'+solveTimeNum);
