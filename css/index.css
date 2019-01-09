@@ -153,3 +153,6 @@ img {display: block; position: absolute;}
 .mainBox .rankingList ul li span.order {width: 0.5rem; text-align: center; padding-left: 0.1rem; padding-right: 0.2rem;}
 .mainBox .rankingList ul li span.userName {padding-left: 0.2rem;}
 .mainBox .rankingList ul li span img {display: inline-block; height: 0.44rem; width: auto;}
+
+/*-----------------不见不散------------------*/
+.mainBox .byebye {width: 6.38rem; height: 8.7rem; background:url('../images/mainbox_bg6.jpg') no-repeat; background-size: 100%; position: absolute; left: 0.09rem; top: 1.2rem; text-align: center; display: none;}

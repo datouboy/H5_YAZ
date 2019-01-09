@@ -94,8 +94,9 @@
 			00:00
 		</div>
 	</div>
-	<!--不见不散-->
-	<div id="byebye" class="byebye"></div>
+	<!--答题等待-显示答题结果等待-->
+	<div id="questionWaiting" class="questionPage">
+	</div>
 	<!--排行榜-->
 	<div id="rankingList" class="rankingList">
 		<div id="wrapper" class="scrollerBox">
@@ -166,7 +167,10 @@
 	var pageInterval;//全局计时器
 	var nextQuestionTime = false;//等待页距离下一题时间
 	var questionPageScroll;//答题区滚动条
+	var questionWaitPageScroll;//显示答案滚动条
 	var questionCount = 6;//题目总数
+
+	var nowQuestion = false;//保存当前题目
 
 	/////////////////////////////////////////////////////////
 	//内容加载后Ajax同步页面时间
@@ -538,15 +542,21 @@
 	//等待读秒状态切换至下一题
 	function showQuestion(){
 		$('#waiting').css('z-index',2);
+		$('#questionWaiting').css('z-index',2);
 		$('#questionPage').show();
 		$('#questionPage').html('');
 		ajaxQuestion(questionNum);
 
+		if($('#waiting').css('display') != 'none'){
+			var nowWaitPage = '#waiting';
+		}else{
+			var nowWaitPage = '#questionWaiting';
+		}
 		//撕纸动画
 		var basicTimelineWating = anime.timeline();
 		basicTimelineWating
 		.add({
-			targets: '#waiting',
+			targets: nowWaitPage,
 			translateY: 150,
 			translateX: -50,
 			scale: 0.9,
@@ -557,8 +567,8 @@
 			offset: '+=1000',
 			complete: function(anim) {
 				//撕页动画后恢复waiting的位置
-				$('#waiting').hide();
-				$('#waiting').css({
+				$(nowWaitPage).hide();
+				$(nowWaitPage).css({
 					"transform":"translateY(0) translateX(0) scale(1) rotate(0)",
 					"opacity":1,
 					"z-index":1
@@ -600,6 +610,7 @@
 			success: function(msg){
 				console.log(msg);
 				if(msg.result){
+					nowQuestion = msg;//储存题目用于等待页显示用
 					questionID = msg.id;
 					//渲染Html
 					var answerListHtml = '';
@@ -739,6 +750,7 @@
 			success: function(msg){
 				console.log(msg);
 				if(msg.result){
+					nowQuestion.rightAnswer = msg.rightAnswer;//储存答案，用于等待显示用
 					//渲染Html
 					if(msg.okAnswer){
 						//答题正确
@@ -831,12 +843,89 @@
 		$('#popBg').fadeOut(300);
 		$('#'+id).fadeOut(300);
 
+		var questionTemplate_end = [
+			'<h3 id="questionTitle_end">{questionNum}.{title}</h3>',
+			'<div id="questionPageBox_end" class="scrollerBox">',
+				'<div>',
+					'<ul id="questionUl_end">',
+						'{questionList}',
+					'</ul>',
+				'</div>',
+			'</div>',
+			'<div class="timeOut timeOut_end">',
+				'<span id="questionTimeOut_end">00:08</span>',
+			'</div>'
+		].join("");
+
+		var questionListTemplate_end = '<li class="{onthis}">{answer}</li>';
+
 		if(questionNum <= questionCount){
 			$('#questionPage').css('z-index',2);
-			$('#waiting').show();
+			$('#questionWaiting').show();
+			$('#questionWaiting').css('z-index',1);
+
+			var abcde = ["A","B","C","D","E"];
+
+			msg = nowQuestion;
+			questionID = msg.id;
+			//渲染Html
+			var answerListHtml = '';
+			for (var i = 0; i<=msg.answer.length-1; i++) {
+				var obj_end = {}
+				obj_end.answer = msg.answer[i].text;
+				if(nowQuestion.rightAnswer.indexOf(abcde[i]) != -1){
+					obj_end.onthis = "onthis";
+				}else{
+					obj_end.onthis = " ";
+				}
+				answerListHtml =  answerListHtml + substitute(questionListTemplate_end,obj_end);
+			}
+			obj_end = {}
+			obj_end.questionNum = questionNum - 1;
+			obj_end.title = msg.title;
+			obj_end.questionList = answerListHtml;
+			$('#questionWaiting').html(substitute(questionTemplate_end, obj_end));
+
+			switch (msg.style.title) {
+				case 1:
+					console.log("标题样式1: 字数多");//4行字
+					$('#questionTitle_end').attr('class','size_1');
+					break;
+				case 2:
+					console.log("标题样式1: 字数偏多");//3行字
+					$('#questionTitle_end').attr('class','size_2');
+					break;
+				case 3:
+					console.log("标题样式1: 字数偏少");//2行字
+					$('#questionTitle_end').attr('class','size_3');
+					break;
+				default:
+					console.log("标题默认样式: 字数最少");//1行字
+					$('#questionTitle_end').attr('class','');
+			}
+
+			switch (msg.style.article) {
+				case 1:
+					console.log("答案样式: 答案文字多");
+					$('#questionUl_end').attr('class','size_1');
+					break;
+				default:
+					console.log("答案默认样式: 答案文字少");
+					$('#questionUl_end').attr('class','');
+			}
+
+			//加载滚动条
+			setTimeout(function(){
+				questionWaitPageScroll = new IScroll("#questionPageBox_end",{
+					mouseWheel: true,
+					scrollbars: true,
+					scrollX: false,
+					//preventDefault: false,
+				});
+			}, 200);
 		}else{
 			console.log('打开榜单');
-			byebye();
+			openRankingList();
 		}
 
 		//撕纸动画
@@ -885,6 +974,7 @@
 		nextQuestionTimeOutFun();
 		function nextQuestionTimeOutFun(){
 			$('#waiting .timeOut').html(formatNumToTime(nextQuestionTime));
+			$('#questionTimeOut_end').html(formatNumToTime(nextQuestionTime));
 			setTimeout(function(){
 				if(nextQuestionTime > 0){
 					nextQuestionTime--;
@@ -893,19 +983,13 @@
 					console.log('打开下一题');
 					nextQuestionTime = false;
 					showQuestion();
+					if(typeof(questionWaitPageScroll) != "undefined"){
+						questionWaitPageScroll.destroy();
+						questionWaitPageScroll=null;
+					}
 				}
 			}, 1000)
 		}
-	}
-
-	//不见不散
-	function byebye(){
-		$('#byebye').show();
-		$('#questionPage').css('z-index',3);
-
-		setTimeout(function(){
-			openRankingList();
-		}, 3000);
 	}
 
 	//打开排行榜
@@ -939,31 +1023,7 @@
 						$('#wrapper ul').append(substitute(rankingTemplate, obj));
 					}
 					$('#rankingList').show();
-					$('#byebye').css('z-index',3);
-
-					//撕纸动画
-					var basicTimelineByebye = anime.timeline();
-					basicTimelineByebye
-					.add({
-						targets: '#byebye',
-						translateY: 150,
-						translateX: -50,
-						scale: 0.9,
-						rotate: 10,
-						opacity: 0,
-						easing: 'easeInOutQuad',
-						duration: 800,
-						offset: '+=1000',
-						complete: function(anim) {
-							$('#byebye').hide();
-							$('#byebye').css({
-								"transform":"translateY(0) translateX(0) scale(1) rotate(0)",
-								"opacity":1,
-								"z-index":1
-							})
-						}
-					});
-
+					$('#questionPage').css('z-index',3);
 					setTimeout(function(){
 						var myScroll = new IScroll("#wrapper",{
 							mouseWheel: true,
